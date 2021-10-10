@@ -1,4 +1,4 @@
-package org.wit.myapplication
+package org.wit.property_manager
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

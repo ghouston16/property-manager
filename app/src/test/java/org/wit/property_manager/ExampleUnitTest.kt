@@ -1,4 +1,4 @@
-package org.wit.myapplication
+package org.wit.property_manager
 
 import org.junit.Test
 

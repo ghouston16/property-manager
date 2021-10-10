@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Property-Manager-v1</string>
+    <string name="app_name">Property Manager</string>
+    <string name="button_addProperty">Add Property</string>
+    <string name="hint_propertyTitle">Property Title</string>
 </resources>
