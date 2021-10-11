@@ -2,4 +2,5 @@
     <string name="app_name">Property Manager</string>
     <string name="button_addProperty">Add Property</string>
     <string name="hint_propertyTitle">Property Title</string>
+    <string name="hint_propertyDescription">Description </string>
 </resources>

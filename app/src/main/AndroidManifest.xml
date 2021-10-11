@@ -8,7 +8,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Property">
-        <activity android:name="org.wit.property_manager.PropertyActivity">
+        <activity android:name="org.wit.property_manager.activities.PropertyActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

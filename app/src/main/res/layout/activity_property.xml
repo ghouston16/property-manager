@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.wit.property.PropertyActivity">
+    tools:context="org.wit.property_manager.activities.PropertyActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,6 +42,19 @@
 
                 <EditText
                     android:id="@+id/propertyTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_margin="8dp"
+                    android:autofillHints=""
+                    android:hint="@string/hint_propertyTitle"
+                    android:inputType="text"
+                    android:maxLength="25"
+                    android:maxLines="1"
+                    android:padding="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="14sp" />
+                <EditText
+                    android:id="@+id/propertyDescription"
                     android:layout_width="match_parent"
                     android:layout_height="45dp"
                     android:layout_margin="8dp"
