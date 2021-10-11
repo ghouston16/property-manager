@@ -3,9 +3,11 @@ package org.wit.property_manager.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import org.wit.property_manager.R
 import org.wit.property_manager.databinding.ActivityPropertyListBinding
 import org.wit.property_manager.databinding.CardPropertyBinding
 import org.wit.property_manager.main.MainApp
@@ -19,6 +21,8 @@ class PropertyListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
 
         app = application as MainApp
@@ -26,6 +30,11 @@ class PropertyListActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = PropertyAdapter(app.properties)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
 
@@ -54,4 +63,5 @@ class PropertyAdapter constructor(private var properties: List<PropertyModel>) :
             binding.description.text = property.description
         }
     }
+
 }
