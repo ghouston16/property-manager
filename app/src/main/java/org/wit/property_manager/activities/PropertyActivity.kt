@@ -32,7 +32,10 @@ class PropertyActivity : AppCompatActivity() {
                 app.properties.add(property.copy())
                 i("add Button Pressed: ${property}")
                 for (i in app.properties.indices)
-                { i("Property[$i]:${this.app.properties[i]}") }
+                { i("Property[$i]:${this.app.properties[i]}")
+                }
+                setResult(RESULT_OK)
+                finish()
             }
             else {
                 Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
