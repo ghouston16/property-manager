@@ -39,6 +39,16 @@ class PropertyListActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.item_add -> {
+                val launcherIntent = Intent(this, PropertyActivity::class.java)
+                startActivityForResult(launcherIntent, 0)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
 
 class PropertyAdapter constructor(private var properties: List<PropertyModel>) :

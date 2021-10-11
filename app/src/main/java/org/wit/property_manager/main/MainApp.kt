@@ -11,9 +11,9 @@ class MainApp : Application() {
         super.onCreate()
         Timber.plant(Timber.DebugTree())
         i("Property App started")
-  /*      properties.add(PropertyModel("One", "About one..."))
+        properties.add(PropertyModel("One", "About one..."))
         properties.add(PropertyModel("Two", "About two..."))
         properties.add(PropertyModel("Three", "About three..."))
-    */
     }
+
 }
