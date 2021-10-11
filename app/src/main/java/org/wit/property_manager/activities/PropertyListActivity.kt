@@ -3,18 +3,19 @@ package org.wit.property_manager.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
+//import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.ViewGroup
-import androidx.core.app.ActivityCompat.startActivityForResult
+//import android.view.ViewGroup
+//import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+//import androidx.recyclerview.widget.RecyclerView
 import org.wit.property_manager.R
+import org.wit.property_manager.adapters.PropertyAdapter
 import org.wit.property_manager.databinding.ActivityPropertyListBinding
-import org.wit.property_manager.databinding.CardPropertyBinding
+//import org.wit.property_manager.databinding.CardPropertyBinding
 import org.wit.property_manager.main.MainApp
-import org.wit.property_manager.models.PropertyModel
+//import org.wit.property_manager.models.PropertyModel
 
 class PropertyListActivity : AppCompatActivity() {
 
@@ -32,7 +33,7 @@ class PropertyListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PropertyAdapter(app.properties)
+        binding.recyclerView.adapter = PropertyAdapter(app.properties.findAll())
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -48,32 +49,5 @@ class PropertyListActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
-    }
-}
-
-class PropertyAdapter constructor(private var properties: List<PropertyModel>) :
-    RecyclerView.Adapter<PropertyAdapter.MainHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-        val binding = CardPropertyBinding
-            .inflate(LayoutInflater.from(parent.context), parent, false)
-
-        return MainHolder(binding)
-    }
-
-    override fun onBindViewHolder(holder: MainHolder, position: Int) {
-        val property = properties[holder.adapterPosition]
-        holder.bind(property)
-    }
-
-    override fun getItemCount(): Int = properties.size
-
-    class MainHolder(private val binding : CardPropertyBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(property: PropertyModel) {
-            binding.propertyTitle.text = property.title
-            binding.description.text = property.description
-        }
     }
 }

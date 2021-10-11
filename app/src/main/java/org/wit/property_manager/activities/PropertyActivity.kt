@@ -33,11 +33,9 @@ class PropertyActivity : AppCompatActivity() {
             property.title = binding.propertyTitle.text.toString()
             property.description =binding.propertyDescription.text.toString()
             if (property.title.isNotEmpty()) {
-                app.properties.add(property.copy())
-                i("add Button Pressed: ${property}")
-                for (i in app.properties.indices)
-                { i("Property[$i]:${this.app.properties[i]}")
-                }
+                app.properties.create(property.copy())
+                //app.properties.add(property.copy())
+
                 setResult(RESULT_OK)
                 finish()
             }
