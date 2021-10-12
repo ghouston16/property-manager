@@ -6,18 +6,23 @@ import androidx.recyclerview.widget.RecyclerView
 import org.wit.property_manager.databinding.CardPropertyBinding
 import org.wit.property_manager.models.PropertyModel
 
-class PropertyAdapter constructor(private var properties: List<PropertyModel>) :
+interface PropertyListener {
+    fun onPropertyClick(property: PropertyModel)
+}
+class PropertyAdapter constructor(private var properties: List<PropertyModel>,
+                                   private val listener: PropertyListener) :
     RecyclerView.Adapter<PropertyAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardPropertyBinding
             .inflate(LayoutInflater.from(parent.context), parent, false)
+
         return MainHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val property = properties[holder.adapterPosition]
-        holder.bind(property)
+        holder.bind(property, listener)
     }
 
     override fun getItemCount(): Int = properties.size
@@ -25,9 +30,10 @@ class PropertyAdapter constructor(private var properties: List<PropertyModel>) :
     class MainHolder(private val binding : CardPropertyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(property: PropertyModel) {
+        fun bind(property: PropertyModel, listener: PropertyListener) {
             binding.propertyTitle.text = property.title
             binding.description.text = property.description
+            binding.root.setOnClickListener { listener.onPropertyClick(property) }
         }
     }
 }

@@ -5,4 +5,6 @@
     <string name="hint_propertyDescription">Description </string>
     <string name="menu_addProperty">Add</string>
     <string name="menu_cancelProperty">Cancel</string>
+    <string name="enter_property_title"> Please enter a Property Title </string>
+    <string name="save_property">Save Property</string>
 </resources>

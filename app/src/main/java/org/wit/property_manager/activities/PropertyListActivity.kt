@@ -12,12 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 //import androidx.recyclerview.widget.RecyclerView
 import org.wit.property_manager.R
 import org.wit.property_manager.adapters.PropertyAdapter
+import org.wit.property_manager.adapters.PropertyListener
 import org.wit.property_manager.databinding.ActivityPropertyListBinding
 //import org.wit.property_manager.databinding.CardPropertyBinding
 import org.wit.property_manager.main.MainApp
+import org.wit.property_manager.models.PropertyModel
+
 //import org.wit.property_manager.models.PropertyModel
 
-class PropertyListActivity : AppCompatActivity() {
+class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
@@ -28,12 +31,11 @@ class PropertyListActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
-
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PropertyAdapter(app.properties.findAll())
+        binding.recyclerView.adapter = PropertyAdapter(app.properties.findAll(),this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,9 +47,15 @@ class PropertyListActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, PropertyActivity::class.java)
-                startActivityForResult(launcherIntent, 0)
+                startActivityForResult(launcherIntent,0)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPropertyClick(property: PropertyModel) {
+        val launcherIntent = Intent(this, PropertyActivity::class.java)
+        launcherIntent.putExtra("property_edit", property)
+        startActivityForResult(launcherIntent,0)
     }
 }

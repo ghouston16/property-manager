@@ -20,32 +20,39 @@ class PropertyActivity : AppCompatActivity() {
     lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        var edit = false
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
-     //   Timber.plant(Timber.DebugTree())
+        //   Timber.plant(Timber.DebugTree())
         i("Property Activity started...")
-
+        if (intent.hasExtra("property_edit")) {
+            edit = true
+            property = intent.extras?.getParcelable("property_edit")!!
+            binding.propertyTitle.setText(property.title)
+            binding.propertyDescription.setText(property.description)
+            binding.btnAdd.setText(R.string.save_property)
+        }
         binding.btnAdd.setOnClickListener() {
             property.title = binding.propertyTitle.text.toString()
-            property.description =binding.propertyDescription.text.toString()
-            if (property.title.isNotEmpty()) {
-                app.properties.create(property.copy())
-                //app.properties.add(property.copy())
-
-                setResult(RESULT_OK)
-                finish()
+            property.description = binding.propertyDescription.text.toString()
+            if (property.title.isEmpty()) {
+                Snackbar.make(it, R.string.enter_property_title, Snackbar.LENGTH_LONG)
+                    .show()
+            } else {
+                if (edit) {
+                    app.properties.update(property.copy())
+                } else {
+                    app.properties.create(property.copy())
+                }
             }
-            else {
-                Snackbar.make(it,"Please Enter a title", Snackbar.LENGTH_LONG)
-                        .show()
-            }
+            setResult(RESULT_OK)
+            finish()
         }
     }
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_property, menu)
         return super.onCreateOptionsMenu(menu)
