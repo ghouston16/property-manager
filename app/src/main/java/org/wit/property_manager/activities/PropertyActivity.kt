@@ -43,6 +43,9 @@ class PropertyActivity : AppCompatActivity() {
             property = intent.extras?.getParcelable("property_edit")!!
             binding.propertyTitle.setText(property.title)
             binding.propertyDescription.setText(property.description)
+            Picasso.get()
+                    .load(property.image)
+                    .into(binding.propertyImage)
             binding.btnAdd.setText(R.string.save_property)
         }
         binding.btnAdd.setOnClickListener() {
