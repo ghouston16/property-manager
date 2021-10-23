@@ -1,6 +1,8 @@
 package org.wit.property_manager.activities
 
 import android.content.Intent
+import android.location.Location
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -21,6 +23,9 @@ class PropertyActivity : AppCompatActivity() {
     // register callback for image picker
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityPropertyBinding
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+ //   var location = Location(52.245696, -7.139102, 15f)
+
     var property = PropertyModel()
 
     //   val properties = ArrayList<PropertyModel>()
@@ -46,6 +51,9 @@ class PropertyActivity : AppCompatActivity() {
             Picasso.get()
                     .load(property.image)
                     .into(binding.propertyImage)
+            if (property.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_property_image)
+            }
             binding.btnAdd.setText(R.string.save_property)
         }
         binding.btnAdd.setOnClickListener() {
@@ -68,6 +76,14 @@ class PropertyActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
         registerImagePickerCallback()
+        binding.propertyLocation.setOnClickListener {
+            i ("Set Location Pressed")
+        }
+        binding.propertyLocation.setOnClickListener {
+            val launcherIntent = Intent(this, MapActivity::class.java)
+            mapIntentLauncher.launch(launcherIntent)
+        }
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -98,6 +114,10 @@ class PropertyActivity : AppCompatActivity() {
                                 Picasso.get()
                                         .load(property.image)
                                         .into(binding.propertyImage)
+                                binding.chooseImage.setText(R.string.change_property_image)
+                                if (property.image != Uri.EMPTY) {
+                                    binding.chooseImage.setText(R.string.change_property_image)
+                                }
                             } // end of if
                         }
                         RESULT_CANCELED -> {
@@ -107,4 +127,10 @@ class PropertyActivity : AppCompatActivity() {
                     }
                 }
     }
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
+    }
+
 }
