@@ -1,7 +1,6 @@
 package org.wit.property_manager.activities
 
 import android.content.Intent
-import android.location.Location
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,8 +15,10 @@ import org.wit.property_manager.databinding.ActivityPropertyBinding
 import org.wit.property_manager.helpers.showImagePicker
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
+import org.wit.property_manager.models.Location
 import timber.log.Timber
 import timber.log.Timber.i
+
 
 class PropertyActivity : AppCompatActivity() {
     // register callback for image picker
@@ -80,7 +81,9 @@ class PropertyActivity : AppCompatActivity() {
             i ("Set Location Pressed")
         }
         binding.propertyLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
             val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
         registerMapCallback()
