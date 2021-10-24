@@ -1,4 +1,4 @@
-package org.wit.property.activities
+package org.wit.property_manager.activities
 
 import android.content.Intent
 import android.os.Bundle
