@@ -27,7 +27,7 @@ class PropertyActivity : AppCompatActivity() {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     var property = PropertyModel()
-    var location = Location(52.245696, -7.139102, 15f)
+   // var location = Location(52.245696, -7.139102, 15f)
     //   val properties = ArrayList<PropertyModel>()
     lateinit var app: MainApp
 
@@ -81,6 +81,12 @@ class PropertyActivity : AppCompatActivity() {
         }
         binding.propertyLocation.setOnClickListener {
           //  var location = Location(52.245696, -7.139102, 15f)
+            val location = Location(52.245696, -7.139102, 15f)
+            if (property.zoom != 0f) {
+                location.lat =  property.lat
+                location.lng = property.lng
+                location.zoom = property.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -137,8 +143,11 @@ class PropertyActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            location = result.data!!.extras?.getParcelable("location")!!
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
+                            property.lat = location.lat
+                            property.lng = location.lng
+                            property.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
