@@ -1,33 +1,26 @@
-package org.wit.property_manager.activities
+package org.wit.property.activities
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-//import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-//import android.view.ViewGroup
-//import androidx.core.app.ActivityCompat.startActivityForResult
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-//import androidx.recyclerview.widget.RecyclerView
 import org.wit.property_manager.R
+import org.wit.property_manager.activities.PropertyActivity
 import org.wit.property_manager.adapters.PropertyAdapter
 import org.wit.property_manager.adapters.PropertyListener
 import org.wit.property_manager.databinding.ActivityPropertyListBinding
-//import org.wit.property_manager.databinding.CardPropertyBinding
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
-
-//import org.wit.property_manager.models.PropertyModel
 
 class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
-
-    private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +28,13 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
+
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = PropertyAdapter(app.properties.findAll(), this)
+        loadProperties()
+
         registerRefreshCallback()
     }
 
@@ -52,7 +47,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, PropertyActivity::class.java)
-                startActivityForResult(launcherIntent, 0)
+                refreshIntentLauncher.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -61,12 +56,21 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     override fun onPropertyClick(property: PropertyModel) {
         val launcherIntent = Intent(this, PropertyActivity::class.java)
         launcherIntent.putExtra("property_edit", property)
-        startActivityForResult(launcherIntent, 0)
+        refreshIntentLauncher.launch(launcherIntent)
     }
 
     private fun registerRefreshCallback() {
         refreshIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { binding.recyclerView.adapter?.notifyDataSetChanged() }
+            { loadProperties() }
+    }
+
+    private fun loadProperties() {
+        showProperties(app.properties.findAll())
+    }
+
+    fun showProperties (properties: List<PropertyModel>) {
+        binding.recyclerView.adapter = PropertyAdapter(properties, this)
+        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }
