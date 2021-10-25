@@ -2,7 +2,7 @@ package org.wit.property_manager.models
 
 import timber.log.Timber.i
 
-
+// todo user - json store
 class UserMemStore: UserStore {
     val users = ArrayList<UserModel>()
 

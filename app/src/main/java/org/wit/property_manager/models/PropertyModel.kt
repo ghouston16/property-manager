@@ -4,7 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-
+// todo - deepen model - rental/lease status + user id of creator
 @Parcelize
 data class PropertyModel(var id: Long = 0, var title: String = "",
                          var description: String = "",

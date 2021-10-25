@@ -1,29 +1,30 @@
-package org.wit.property_manager.models
-
+package org.wit.user.models
 
 import android.content.Context
 import android.net.Uri
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import org.wit.property_manager.helpers.*
+import org.wit.property_manager.helpers.exists
+import org.wit.property_manager.models.UserModel
+import org.wit.property_manager.models.UserStore
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
 
-const val JSON_FILE = "properties.json"
-
+const val JSON_FILE = "users.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
     .registerTypeAdapter(Uri::class.java, UriParser())
     .create()
-val listType: Type = object : TypeToken<ArrayList<PropertyModel>>() {}.type
+val listType: Type = object : TypeToken<ArrayList<UserModel>>() {}.type
 
 fun generateRandomId(): Long {
     return Random().nextLong()
 }
 
-class PropertyJSONStore(private val context: Context) : PropertyStore {
+class UserJSONStore(private val context: Context) : UserStore {
 
-    var properties = mutableListOf<PropertyModel>()
+    var users = mutableListOf<UserModel>()
 
     init {
         if (exists(context, JSON_FILE)) {
@@ -31,37 +32,34 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         }
     }
 
-    override fun findAll(): MutableList<PropertyModel> {
+    override fun findAll(): MutableList<UserModel> {
         logAll()
-        return properties
+        return users
     }
 
-    override fun create(property: PropertyModel) {
-        property.id = generateRandomId()
-        properties.add(property)
+    override fun create(user: UserModel) {
+        user.id = generateRandomId()
+        users.add(user)
         serialize()
     }
 
-
-    override fun update(property: PropertyModel) {
-        // todo - find how to pass id of property to be deleted
+/*
+    override fun update(user: UserModel) {
+        // todo
     }
-    override fun delete(property: PropertyModel) {
-        // todo - find how to pass id of property to be deleted
-    }
-
+*/
     private fun serialize() {
-        val jsonString = gsonBuilder.toJson(properties, listType)
+        val jsonString = gsonBuilder.toJson(users, listType)
         write(context, JSON_FILE, jsonString)
     }
 
     private fun deserialize() {
         val jsonString = read(context, JSON_FILE)
-        properties = gsonBuilder.fromJson(jsonString, listType)
+        users = gsonBuilder.fromJson(jsonString, listType)
     }
 
     private fun logAll() {
-        properties.forEach { Timber.i("$it") }
+        users.forEach { Timber.i("$it") }
     }
 }
 
