@@ -20,6 +20,9 @@ class PropertyMemStore: PropertyStore {
         logAll()
     }
 
+    override fun delete(property: PropertyModel) {
+        TODO("Not yet implemented")
+    }
     override fun update(property: PropertyModel) {
         var foundProperty: PropertyModel? = properties.find { p -> p.id == property.id }
         if (foundProperty != null) {
