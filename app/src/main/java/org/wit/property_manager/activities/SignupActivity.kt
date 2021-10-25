@@ -14,8 +14,11 @@ import timber.log.Timber.i
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
+    private lateinit var loginIntent: Intent
     var user = UserModel()
- //   val users = UserMemStore()
+    var candidate = UserModel()
+
+    //   val users = UserMemStore()
     lateinit var app: MainApp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,18 +35,43 @@ class SignupActivity : AppCompatActivity() {
         binding.btnSignup.setOnClickListener() {
             user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
-            if (user.email.isNotEmpty()) {
+            if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
                 i("User Added: $user.email")
                 app.users.create(user.copy())
                 Snackbar
-                    .make(it,"Registration successful - Please log in..", Snackbar.LENGTH_LONG)
+                    .make(it, "Registration successful - Please log in..", Snackbar.LENGTH_LONG)
                     .show()
-                val launcherIntent = Intent(this, PropertyListActivity::class.java)
-                startActivityForResult(launcherIntent,0)
-            }
-            else {
+            } else {
                 Snackbar
-                    .make(it,"Please Enter an Email", Snackbar.LENGTH_LONG)
+                    .make(it, "Please Enter an Email and Password", Snackbar.LENGTH_LONG)
+                    .show()
+            }
+        }
+
+        // Login Method and validation
+        binding.btnLogin.setOnClickListener() {
+            candidate.email = binding.userEmail.text.toString()
+            candidate.password = binding.userPassword.text.toString()
+            val userList = app.users.findAll()
+            if (candidate.email.isNotEmpty() && candidate.password.isNotEmpty()) {
+                for (person in userList) {
+                    if (candidate.email == person.email && candidate.password == person.password) {
+                        i("User Logged In $user")
+                        val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                        startActivityForResult(launcherIntent, 0)
+                    } else {
+                        Snackbar
+                            .make(
+                                it,
+                                "Please Enter a valid Email and Password",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .show()
+                    }
+                }
+            } else {
+                Snackbar
+                    .make(it, "Please Enter Both an Email and Password", Snackbar.LENGTH_LONG)
                     .show()
             }
         }
