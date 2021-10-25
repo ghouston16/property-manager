@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Property">
-<<<<<<< HEAD
+
         <uses-library
             android:name="com.google.android.wearable"
             android:required="true" />
@@ -36,6 +36,7 @@
         <activity
             android:name=".activities.SignupActivity"
             android:label="@string/title_activity_signup">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,8 +50,10 @@
              You need a different API key for each encryption key, including the release key                              that is used to sign the APK for publishing.
              You can define the keys for the debug and release targets in src/debug/ and                                      src/release/.
         -->
-=======
+
         <activity android:name=".activities.SignupActivity">
+
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -58,7 +61,6 @@
             </intent-filter>
         </activity>
 
->>>>>>> develop
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

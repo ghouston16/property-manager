@@ -60,13 +60,12 @@
                     android:layout_margin="8dp"
                     android:autofillHints=""
                     android:hint="@string/hint_userPassword"
-                    android:inputType="text"
+                    android:inputType="textPassword"
                     android:maxLength="25"
                     android:maxLines="1"
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="14sp" />
-                android:inputType="textPassword" />
 
                 <Button
                     android:id="@+id/btnSignup"
@@ -80,7 +79,18 @@
                     android:text="@string/button_signup"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
-
+                <Button
+                    android:id="@+id/btnLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorAccent"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="@string/button_login"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </ScrollView>
