@@ -38,9 +38,23 @@ class SignupActivity : AppCompatActivity() {
 
         binding.btnSignup.setOnClickListener() {
             val emailList = app.users.findAll()
+            var emailInUse = false
             user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
-            if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
+            for (i in emailList)
+            {
+                if (user.email == i.email){
+                    i("match found")
+                    emailInUse = true
+                    Snackbar
+                        .make(it, "Email Already in Use!!", Snackbar.LENGTH_LONG)
+                        .show()
+
+                } else {
+                    i("match not found")
+                }
+            }
+            if (user.email.isNotEmpty() && user.password.isNotEmpty() && !emailInUse) {
                         var count = (user.email.length - 1)
                         for (i in 0..count) {
                             emailValid = if (user.email.contains("@")) {
@@ -74,7 +88,7 @@ class SignupActivity : AppCompatActivity() {
                         }
                     } else {
                         Snackbar
-                            .make(it, "Please Enter an Email and Password", Snackbar.LENGTH_LONG)
+                            .make(it, "Email/Password Invalid or Email in Use", Snackbar.LENGTH_LONG)
                             .show()
 
             }
