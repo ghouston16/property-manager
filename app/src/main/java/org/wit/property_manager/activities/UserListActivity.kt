@@ -22,13 +22,14 @@ class UserListActivity : AppCompatActivity(), UserListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityUserListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-
+    val user = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
+
 
         app = application as MainApp
 
