@@ -44,10 +44,10 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
 
 
     override fun update(property: PropertyModel) {
-        // todo
+        // todo - find how to pass id of property to be deleted
     }
     override fun delete(property: PropertyModel) {
-        // todo
+        // todo - find how to pass id of property to be deleted
     }
 
     private fun serialize() {
