@@ -16,6 +16,7 @@ import org.wit.property_manager.helpers.showImagePicker
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
 import org.wit.property_manager.models.Location
+import org.wit.property_manager.models.UserModel
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -27,6 +28,7 @@ class PropertyActivity : AppCompatActivity() {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     var property = PropertyModel()
+    val user = UserModel()
    // var location = Location(52.245696, -7.139102, 15f)
     //   val properties = ArrayList<PropertyModel>()
     lateinit var app: MainApp
@@ -38,7 +40,6 @@ class PropertyActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-
         app = application as MainApp
 
         //   Timber.plant(Timber.DebugTree())
@@ -48,6 +49,9 @@ class PropertyActivity : AppCompatActivity() {
             property = intent.extras?.getParcelable("property_edit")!!
             binding.propertyTitle.setText(property.title)
             binding.propertyDescription.setText(property.description)
+            binding.propertyType.setText(property.type)
+            binding.propertyStatus.setText(property.status)
+            property.agent = user.id
             Picasso.get()
                     .load(property.image)
                     .into(binding.propertyImage)
@@ -59,6 +63,9 @@ class PropertyActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             property.title = binding.propertyTitle.text.toString()
             property.description = binding.propertyDescription.text.toString()
+            property.type = binding.propertyType.text.toString()
+            property.status = binding.propertyStatus.text.toString()
+            property.agent = user.id
             if (property.title.isEmpty()) {
                 Snackbar.make(it, R.string.enter_property_title, Snackbar.LENGTH_LONG)
                         .show()
@@ -90,6 +97,11 @@ class PropertyActivity : AppCompatActivity() {
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
+        }
+        binding.btnDelete.setOnClickListener{
+           app.properties.delete(property)
+            val launcherIntent = Intent(this, PropertyListActivity::class.java)
+            startActivityForResult(launcherIntent, 0)
         }
         registerMapCallback()
     }

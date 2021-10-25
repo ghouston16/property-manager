@@ -47,6 +47,7 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         // todo - find how to pass id of property to be deleted
     }
     override fun delete(property: PropertyModel) {
+        properties.remove(property)
         // todo - find how to pass id of property to be deleted
     }
 
