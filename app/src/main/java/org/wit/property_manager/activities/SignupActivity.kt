@@ -17,12 +17,14 @@ class SignupActivity : AppCompatActivity() {
     private lateinit var loginIntent: Intent
     var user = UserModel()
     var candidate = UserModel()
-
+    var emailValid = false
+    var passwordValid = false
 
     //   val users = UserMemStore()
     lateinit var app: MainApp
     override fun onCreate(savedInstanceState: Bundle?) {
         val admin = "gh@wit.ie"
+       // val userList = app.users.findAll()
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignupBinding.inflate(layoutInflater)
@@ -35,21 +37,48 @@ class SignupActivity : AppCompatActivity() {
         i("Signup Activity started...")
 
         binding.btnSignup.setOnClickListener() {
+            val emailList = app.users.findAll()
             user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
             if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
-                i("User Added: $user.email")
-                app.users.create(user.copy())
-                Snackbar
-                    .make(it, "Registration successful - Please log in..", Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                Snackbar
-                    .make(it, "Please Enter an Email and Password", Snackbar.LENGTH_LONG)
-                    .show()
+                        var count = (user.email.length - 1)
+                        for (i in 0..count) {
+                            emailValid = if (user.email.contains("@")) {
+                                i("Valid email entered")
+                                true
+                            } else {
+                                i("Email Invalid")
+                                false
+                            }
+                        }
+                        if (user.password.length >= 8) {
+                            passwordValid = true
+                        }
+                        if (passwordValid && emailValid) {
+                            app.users.create(user.copy())
+                            Snackbar
+                                .make(
+                                    it,
+                                    "Registration successful - Please log in..",
+                                    Snackbar.LENGTH_LONG
+                                )
+                                .show()
+                        } else {
+                            Snackbar
+                                .make(
+                                    it,
+                                    "Please Enter a Valid Email and 8+ char Password",
+                                    Snackbar.LENGTH_LONG
+                                )
+                                .show()
+                        }
+                    } else {
+                        Snackbar
+                            .make(it, "Please Enter an Email and Password", Snackbar.LENGTH_LONG)
+                            .show()
+
             }
         }
-
         // Login Method and validation
         binding.btnLogin.setOnClickListener() {
             candidate.email = binding.userEmail.text.toString()
@@ -59,7 +88,7 @@ class SignupActivity : AppCompatActivity() {
                 for (person in userList) {
                     if (candidate.email == person.email && candidate.password == person.password) {
                         i("User Logged In $user")
-                        if (candidate.email == admin){
+                        if (candidate.email == admin) {
                             val launcherIntent = Intent(this, UserListActivity::class.java)
                             startActivityForResult(launcherIntent, 0)
                         } else {

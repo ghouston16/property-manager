@@ -67,7 +67,7 @@ class UserListActivity : AppCompatActivity(), UserListener {
             { loadUsers() }
     }
 
-    private fun loadUsers() {
+    fun loadUsers() {
         showUsers(app.users.findAll())
     }
 
