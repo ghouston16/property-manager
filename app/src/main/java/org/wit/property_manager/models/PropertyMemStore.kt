@@ -21,13 +21,16 @@ class PropertyMemStore: PropertyStore {
     }
 
     override fun delete(property: PropertyModel) {
-        TODO("Not yet implemented")
+        properties.remove(property)
     }
     override fun update(property: PropertyModel) {
         var foundProperty: PropertyModel? = properties.find { p -> p.id == property.id }
         if (foundProperty != null) {
             foundProperty.title = property.title
             foundProperty.description = property.description
+            foundProperty.type = property.type
+            foundProperty.status = property.status
+            foundProperty.agent = property.agent
             foundProperty.image = property.image
             foundProperty.lat = property.lat
             foundProperty.lng = property.lng

@@ -9,6 +9,9 @@ import kotlinx.parcelize.Parcelize
 data class PropertyModel(var id: Long = 0, var title: String = "",
                          var description: String = "",
                          var image: Uri = Uri.EMPTY,
+                         var type: String = "",
+                         var status : String = "",
+                         var agent : Long = 0,
                          var lat : Double = 0.0,
                          var lng: Double = 0.0,
                          var zoom: Float = 0f): Parcelable
