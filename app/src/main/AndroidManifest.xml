@@ -30,6 +30,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
@@ -48,6 +49,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.PropertyActivity" />
+        <activity
+            android:name=".activities.UserListActivity"
+            android:label="@string/title_activity_user_list">
+        </activity>
+        <activity
+            android:name=".activities.UserActivity"
+            android:label="@string/title_activity_user"
+            android:theme="@style/Theme.Property.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -18,9 +18,11 @@ class SignupActivity : AppCompatActivity() {
     var user = UserModel()
     var candidate = UserModel()
 
+
     //   val users = UserMemStore()
     lateinit var app: MainApp
     override fun onCreate(savedInstanceState: Bundle?) {
+        val admin = "gh@wit.ie"
         super.onCreate(savedInstanceState)
 
         binding = ActivitySignupBinding.inflate(layoutInflater)
@@ -57,8 +59,13 @@ class SignupActivity : AppCompatActivity() {
                 for (person in userList) {
                     if (candidate.email == person.email && candidate.password == person.password) {
                         i("User Logged In $user")
-                        val launcherIntent = Intent(this, PropertyListActivity::class.java)
-                        startActivityForResult(launcherIntent, 0)
+                        if (candidate.email == admin){
+                            val launcherIntent = Intent(this, UserListActivity::class.java)
+                            startActivityForResult(launcherIntent, 0)
+                        } else {
+                            val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                            startActivityForResult(launcherIntent, 0)
+                        }
                     } else {
                         Snackbar
                             .make(
