@@ -46,6 +46,9 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
     override fun update(property: PropertyModel) {
         // todo
     }
+    override fun delete(property: PropertyModel) {
+        // todo
+    }
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(properties, listType)
