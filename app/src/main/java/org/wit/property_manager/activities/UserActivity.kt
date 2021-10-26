@@ -48,6 +48,12 @@ class UserActivity : AppCompatActivity() {
             user = intent.extras?.getParcelable("user_edit")!!
             binding.userEmail.setText(user.email)
             binding.userPassword.setText(user.password)
+            Picasso.get()
+                .load(user.image)
+                .into(binding.userImage)
+            if (user.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_property_image)
+            }
 
             binding.btnAdd.setText(R.string.button_signup)
         }
@@ -70,7 +76,7 @@ class UserActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
-       // registerImagePickerCallback()
+       registerImagePickerCallback()
         /*
         binding.userLocation.setOnClickListener {
             i ("Set Location Pressed")
@@ -105,7 +111,7 @@ class UserActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-/*
+
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -120,9 +126,9 @@ class UserActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(user.image)
                                 .into(binding.userImage)
-                            binding.chooseImage.setText(R.string.change_user_image)
+                            binding.chooseImage.setText(R.string.change_property_image)
                             if (user.image != Uri.EMPTY) {
-                                binding.chooseImage.setText(R.string.change_user_image)
+                                binding.chooseImage.setText(R.string.change_property_image)
                             }
                         } // end of if
                     }
@@ -135,7 +141,3 @@ class UserActivity : AppCompatActivity() {
     }
 
     }
-
- */
-
-}
