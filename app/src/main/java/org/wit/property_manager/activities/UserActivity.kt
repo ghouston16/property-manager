@@ -60,11 +60,21 @@ class UserActivity : AppCompatActivity() {
             binding.btnAdd.setText(R.string.button_updateUser)
         }
         binding.btnAdd.setOnClickListener() {
-            user.email = user.email
+            user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
-            if (user.password.isNotEmpty()) {
+            if ( user.email.isNotEmpty()&&user.password.isNotEmpty()) {
                 passwordValid = user.password.length >= 8
-                if (passwordValid ) {
+                var count = (user.email.length - 1)
+                for (i in 0..count) {
+                    emailValid = if (user.email.contains("@")) {
+                        i("Valid email entered")
+                        true
+                    } else {
+                        i("Email Invalid")
+                        false
+                    }
+                }
+                if (passwordValid && emailValid ) {
                     if (edit){
                         app.users.update(user.copy())
                         Snackbar
@@ -80,10 +90,10 @@ class UserActivity : AppCompatActivity() {
                     setResult(RESULT_OK)
                     finish()
                 }
-                    else {
-                        Snackbar
-                            .make(it, "Please enter a valid password", Snackbar.LENGTH_LONG)
-                            .show()
+                else {
+                    Snackbar
+                        .make(it, "Please enter a valid Email & Password", Snackbar.LENGTH_LONG)
+                        .show()
 
                 }
             }
