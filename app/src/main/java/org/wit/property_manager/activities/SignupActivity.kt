@@ -46,10 +46,6 @@ class SignupActivity : AppCompatActivity() {
                 if (user.email == i.email){
                     i("match found")
                     emailInUse = true
-                    Snackbar
-                        .make(it, "Email Already in Use!!", Snackbar.LENGTH_LONG)
-                        .show()
-
                 } else {
                     i("match not found")
                 }

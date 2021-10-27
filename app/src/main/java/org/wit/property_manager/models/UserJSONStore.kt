@@ -11,6 +11,7 @@ import org.wit.property_manager.models.UserStore
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val JSON_FILE = "users.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
@@ -43,11 +44,21 @@ class UserJSONStore(private val context: Context) : UserStore {
         serialize()
     }
 
-/*
+
     override fun update(user: UserModel) {
-        // todo
+        val userList = findAll() as ArrayList<UserModel>
+        var foundUser: UserModel? = userList.find { p -> p.id == user.id }
+        if (foundUser != null) {
+            foundUser.email = user.email
+            foundUser.password = user.password
+            foundUser.image = user.image
+        }
+        serialize()
     }
-*/
+    override fun delete(user: UserModel) {
+        users.remove(user)
+        serialize()
+    }
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(users, listType)
         write(context, JSON_FILE, jsonString)
