@@ -30,5 +30,6 @@
     <string name="hint_propertyType">Auction or Rental</string>
     <string name="hint_propertyStatus">Occupied/Vacant/Sold etc.</string>
     <string name="button_deleteProperty">Delete</string>
+    <string name="button_updateUser">Update</string>
 
 </resources>

@@ -25,6 +25,8 @@ class UserActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var emailValid = true
+    var passwordValid = true
 
     var user = UserModel()
     // var location = Location(52.245696, -7.139102, 15f)
@@ -48,29 +50,53 @@ class UserActivity : AppCompatActivity() {
             user = intent.extras?.getParcelable("user_edit")!!
             binding.userEmail.setText(user.email)
             binding.userPassword.setText(user.password)
+            Picasso.get()
+                .load(user.image)
+                .into(binding.userImage)
+            if (user.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_property_image)
+            }
 
-            binding.btnAdd.setText(R.string.button_signup)
+            binding.btnAdd.setText(R.string.button_updateUser)
         }
         binding.btnAdd.setOnClickListener() {
-            user.email = binding.userEmail.text.toString()
+            user.email = user.email
             user.password = binding.userPassword.text.toString()
-            if (user.email.isEmpty()) {
-                Snackbar.make(it, R.string.enter_userEmail, Snackbar.LENGTH_LONG)
-                    .show()
-            } else {
-                if (edit) {
-                    app.users.create(user.copy())
-                } else {
-                    app.users.create(user.copy())
+            if (user.password.isNotEmpty()) {
+                passwordValid = user.password.length >= 8
+                if (passwordValid ) {
+                    if (edit){
+                        app.users.update(user.copy())
+                        Snackbar
+                            .make(
+                                it,
+                                "User Updated Successful",
+                                Snackbar.LENGTH_LONG
+                            )
+                            .show()
+                    } else {
+                        app.users.create(user.copy())
+                    }
+                    setResult(RESULT_OK)
+                    finish()
+                }
+                    else {
+                        Snackbar
+                            .make(it, "Please enter a valid password", Snackbar.LENGTH_LONG)
+                            .show()
+
                 }
             }
-            setResult(RESULT_OK)
-            finish()
         }
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
-       // registerImagePickerCallback()
+       registerImagePickerCallback()
+        binding.btnDelete.setOnClickListener{
+            app.users.delete(user)
+            val launcherIntent = Intent(this, UserListActivity::class.java)
+            startActivityForResult(launcherIntent, 0)
+        }
         /*
         binding.userLocation.setOnClickListener {
             i ("Set Location Pressed")
@@ -105,7 +131,7 @@ class UserActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-/*
+
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -120,9 +146,9 @@ class UserActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(user.image)
                                 .into(binding.userImage)
-                            binding.chooseImage.setText(R.string.change_user_image)
+                            binding.chooseImage.setText(R.string.change_property_image)
                             if (user.image != Uri.EMPTY) {
-                                binding.chooseImage.setText(R.string.change_user_image)
+                                binding.chooseImage.setText(R.string.change_property_image)
                             }
                         } // end of if
                     }
@@ -135,7 +161,3 @@ class UserActivity : AppCompatActivity() {
     }
 
     }
-
- */
-
-}

@@ -9,6 +9,7 @@ import org.wit.property_manager.helpers.*
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.ArrayList
 
 const val JSON_FILE = "properties.json"
 
@@ -44,10 +45,25 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
 
 
     override fun update(property: PropertyModel) {
-        // todo - find how to pass id of property to be deleted
+        val propertyList = findAll() as ArrayList<PropertyModel>
+        var foundProperty: PropertyModel? = propertyList.find { p -> p.id == property.id }
+        if (foundProperty != null) {
+            foundProperty.title = property.title
+            foundProperty.description = property.description
+            foundProperty.type = property.type
+            foundProperty.status = property.status
+            foundProperty.agent = property.agent
+            foundProperty.image = property.image
+            foundProperty.lat = property.lat
+            foundProperty.lng = property.lng
+            foundProperty.zoom = property.zoom
+            logAll()
+        }
+        serialize()
     }
     override fun delete(property: PropertyModel) {
         properties.remove(property)
+        serialize()
         // todo - find how to pass id of property to be deleted
     }
 
