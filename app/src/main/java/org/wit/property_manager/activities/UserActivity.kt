@@ -92,7 +92,7 @@ class UserActivity : AppCompatActivity() {
                 }
                     else {
                         Snackbar
-                            .make(it, "Please enter a valid password", Snackbar.LENGTH_LONG)
+                            .make(it, "Please enter a valid Email & Password", Snackbar.LENGTH_LONG)
                             .show()
 
                 }
