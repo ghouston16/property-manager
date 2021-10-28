@@ -56,8 +56,9 @@ class UserActivity : AppCompatActivity() {
             if (user.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_property_image)
             }
-
+            if (edit){
             binding.btnAdd.setText(R.string.button_updateUser)
+        }
         }
         binding.btnAdd.setOnClickListener() {
             user.email = binding.userEmail.text.toString()
@@ -76,6 +77,7 @@ class UserActivity : AppCompatActivity() {
                 }
                 if (passwordValid && emailValid ) {
                     if (edit){
+
                         app.users.update(user.copy())
                         Snackbar
                             .make(
@@ -85,6 +87,7 @@ class UserActivity : AppCompatActivity() {
                             )
                             .show()
                     } else {
+                        binding.btnAdd.setText(R.string.button_addUser)
                         app.users.create(user.copy())
                     }
                     setResult(RESULT_OK)

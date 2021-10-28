@@ -31,5 +31,6 @@
     <string name="hint_propertyStatus">Occupied/Vacant/Sold etc.</string>
     <string name="button_deleteProperty">Delete</string>
     <string name="button_updateUser">Update</string>
+    <string name="button_addUser">Add User</string>
 
 </resources>
