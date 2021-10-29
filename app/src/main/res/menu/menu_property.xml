@@ -2,12 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/item_cancel"
+        android:title="@string/menu_cancelProperty"
+        app:showAsAction="always"/>
+    <item
         android:visible="false"
         android:id="@+id/item_delete"
         android:title="@string/button_deleteProperty"
-        app:showAsAction="always"/>
-    <item
-        android:id="@+id/item_cancel"
-        android:title="@string/menu_cancelProperty"
+        android:textColor="@color/colorWarning"
         app:showAsAction="always"/>
 </menu>
