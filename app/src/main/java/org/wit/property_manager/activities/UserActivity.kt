@@ -105,11 +105,6 @@ class UserActivity : AppCompatActivity() {
             showImagePicker(imageIntentLauncher)
         }
        registerImagePickerCallback()
-        binding.btnDelete.setOnClickListener{
-            app.users.delete(user)
-            val launcherIntent = Intent(this, UserListActivity::class.java)
-            startActivityForResult(launcherIntent, 0)
-        }
         /*
         binding.userLocation.setOnClickListener {
             i ("Set Location Pressed")
@@ -137,6 +132,12 @@ class UserActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            R.id.item_delete -> {
+                app.users.delete(user)
+                finish()
+            }
+        }
         when (item.itemId) {
             R.id.item_cancel -> {
                 finish()
