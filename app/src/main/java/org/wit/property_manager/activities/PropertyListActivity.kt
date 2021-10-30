@@ -8,11 +8,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import org.wit.property_manager.R
 import org.wit.property_manager.activities.PropertyActivity
 import org.wit.property_manager.adapters.PropertyAdapter
 import org.wit.property_manager.adapters.PropertyListener
 import org.wit.property_manager.databinding.ActivityPropertyListBinding
+//import org.wit.property_manager.databinding.imageIcon
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
 
@@ -34,7 +36,13 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         loadProperties()
-
+       /*
+        val propertyList = app.properties.findAll()
+        for(x in propertyList) {
+            Picasso.get().load(x.image).resize(200, 200).into(binding.imageIcon)
+        }
+        
+        */
         registerRefreshCallback()
     }
 

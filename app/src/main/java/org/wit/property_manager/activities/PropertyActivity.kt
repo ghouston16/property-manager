@@ -25,16 +25,16 @@ class PropertyActivity : AppCompatActivity() {
     // register callback for image picker
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityPropertyBinding
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
 
     var property = PropertyModel()
     val user = UserModel()
-   // var location = Location(52.245696, -7.139102, 15f)
+    var edit = false;
+    // var location = Location(52.245696, -7.139102, 15f)
     //   val properties = ArrayList<PropertyModel>()
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        var edit = false
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -53,8 +53,8 @@ class PropertyActivity : AppCompatActivity() {
             binding.propertyStatus.setText(property.status)
             property.agent = user.id
             Picasso.get()
-                    .load(property.image)
-                    .into(binding.propertyImage)
+                .load(property.image)
+                .into(binding.propertyImage)
             if (property.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_property_image)
             }
@@ -68,7 +68,7 @@ class PropertyActivity : AppCompatActivity() {
             property.agent = user.id
             if (property.title.isEmpty()) {
                 Snackbar.make(it, R.string.enter_property_title, Snackbar.LENGTH_LONG)
-                        .show()
+                    .show()
             } else {
                 if (edit) {
                     app.properties.update(property.copy())
@@ -84,13 +84,13 @@ class PropertyActivity : AppCompatActivity() {
         }
         registerImagePickerCallback()
         binding.propertyLocation.setOnClickListener {
-            i ("Set Location Pressed")
+            i("Set Location Pressed")
         }
         binding.propertyLocation.setOnClickListener {
-          //  var location = Location(52.245696, -7.139102, 15f)
+            //  var location = Location(52.245696, -7.139102, 15f)
             val location = Location(52.245696, -7.139102, 15f)
             if (property.zoom != 0f) {
-                location.lat =  property.lat
+                location.lat = property.lat
                 location.lng = property.lng
                 location.zoom = property.zoom
             }
@@ -98,20 +98,22 @@ class PropertyActivity : AppCompatActivity() {
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
-        binding.btnDelete.setOnClickListener{
-           app.properties.delete(property)
-            val launcherIntent = Intent(this, PropertyListActivity::class.java)
-            startActivityForResult(launcherIntent, 0)
-        }
         registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_property, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item?.itemId) {
+            R.id.item_delete -> {
+                app.properties.delete(property)
+                finish()
+            }
+        }
         when (item.itemId) {
             R.id.item_cancel -> {
                 finish()
@@ -122,31 +124,32 @@ class PropertyActivity : AppCompatActivity() {
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
-                registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-                { result ->
-                    when (result.resultCode) {
-                        RESULT_OK -> {
-                            if (result.data != null) {
-                                i("Got Result ${result.data!!.data}")
-                                // image equals returned image
-                                property.image = result.data!!.data!!
-                                // use to get image to display
-                                Picasso.get()
-                                        .load(property.image)
-                                        .into(binding.propertyImage)
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Result ${result.data!!.data}")
+                            // image equals returned image
+                            property.image = result.data!!.data!!
+                            // use to get image to display
+                            Picasso.get()
+                                .load(property.image)
+                                .into(binding.propertyImage)
+                            binding.chooseImage.setText(R.string.change_property_image)
+                            if (property.image != Uri.EMPTY) {
                                 binding.chooseImage.setText(R.string.change_property_image)
-                                if (property.image != Uri.EMPTY) {
-                                    binding.chooseImage.setText(R.string.change_property_image)
-                                }
-                            } // end of if
-                        }
-                        RESULT_CANCELED -> {
-                        }
-                        else -> {
-                        }
+                            }
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> {
+                    }
+                    else -> {
                     }
                 }
+            }
     }
+
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -155,14 +158,18 @@ class PropertyActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            val location =
+                                result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
                             property.lat = location.lat
                             property.lng = location.lng
                             property.zoom = location.zoom
                         } // end of if
                     }
-                    RESULT_CANCELED -> { } else -> { }
+                    RESULT_CANCELED -> {
+                    }
+                    else -> {
+                    }
                 }
             }
     }
