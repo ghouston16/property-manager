@@ -16,7 +16,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import org.wit.property_manager.R
 import org.wit.property_manager.models.Location
 
-
 class MapActivity : AppCompatActivity(), OnMapReadyCallback,
     GoogleMap.OnMarkerDragListener {
 

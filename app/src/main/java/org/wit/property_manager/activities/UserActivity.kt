@@ -101,29 +101,17 @@ class UserActivity : AppCompatActivity() {
                 }
             }
         }
-        binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
-        }
-       registerImagePickerCallback()
-        /*
         binding.userLocation.setOnClickListener {
-            i ("Set Location Pressed")
-        }
-        binding.userLocation.setOnClickListener {
-            //  var location = Location(52.245696, -7.139102, 15f)
             val location = Location(52.245696, -7.139102, 15f)
-            if (user.zoom != 0f) {
-                location.lat =  user.lat
-                location.lng = user.lng
-                location.zoom = user.zoom
-            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
+        binding.chooseImage.setOnClickListener {
+            showImagePicker(imageIntentLauncher)
+        }
+       registerImagePickerCallback()
         registerMapCallback()
-
-         */
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -172,6 +160,11 @@ class UserActivity : AppCompatActivity() {
                     }
                 }
             }
+    }
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { i("Map Loaded") }
     }
 
     }
