@@ -52,6 +52,9 @@ class UserJSONStore(private val context: Context) : UserStore {
             foundUser.email = user.email
             foundUser.password = user.password
             foundUser.image = user.image
+            foundUser.lat = user.lat
+            foundUser.lng = user.lng
+            foundUser.zoom = user.zoom
         }
         serialize()
     }
