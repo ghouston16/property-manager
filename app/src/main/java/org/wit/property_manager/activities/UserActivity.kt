@@ -24,13 +24,11 @@ class UserActivity : AppCompatActivity() {
     // register callback for image picker
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
-    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
     var emailValid = true
     var passwordValid = true
 
     var user = UserModel()
-    // var location = Location(52.245696, -7.139102, 15f)
-    //   val users = ArrayList<UserModel>()
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,14 +54,21 @@ class UserActivity : AppCompatActivity() {
             if (user.image != Uri.EMPTY) {
                 binding.chooseImage.setText(R.string.change_property_image)
             }
-            if (edit){
-            binding.btnAdd.setText(R.string.button_updateUser)
+            if (edit) {
+                binding.btnAdd.setText(R.string.button_updateUser)
+            }
         }
-        }
+        /*
+        if (intent.hasExtra("location")){
+            var location = Location(52.245696, -7.139102, 15f)
+
+            }
+
+         */
         binding.btnAdd.setOnClickListener() {
             user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
-            if ( user.email.isNotEmpty()&&user.password.isNotEmpty()) {
+            if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
                 passwordValid = user.password.length >= 8
                 var count = (user.email.length - 1)
                 for (i in 0..count) {
@@ -75,9 +80,14 @@ class UserActivity : AppCompatActivity() {
                         false
                     }
                 }
-                if (passwordValid && emailValid ) {
-                    if (edit){
-
+                if (passwordValid && emailValid) {
+                    if (edit) {
+                        if (intent.hasExtra("location")) {
+                            var location = intent.extras?.getParcelable<Location>("location")!!
+                            user.lng = location.lng
+                            user.lat = location.lat
+                            user.zoom = location.zoom
+                        }
                         app.users.update(user.copy())
                         Snackbar
                             .make(
@@ -92,8 +102,7 @@ class UserActivity : AppCompatActivity() {
                     }
                     setResult(RESULT_OK)
                     finish()
-                }
-                else {
+                } else {
                     Snackbar
                         .make(it, "Please enter a valid Email & Password", Snackbar.LENGTH_LONG)
                         .show()
@@ -102,7 +111,12 @@ class UserActivity : AppCompatActivity() {
             }
         }
         binding.userLocation.setOnClickListener {
-            val location = Location(52.245696, -7.139102, 15f)
+            var location = Location(52.245696, -7.139102, 15f)
+            if (user.zoom != 0f) {
+                location.lat =  user.lat
+                location.lng = user.lng
+                location.zoom = user.zoom
+            }
             val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
@@ -110,7 +124,7 @@ class UserActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
-       registerImagePickerCallback()
+        registerImagePickerCallback()
         registerMapCallback()
     }
 
@@ -161,10 +175,27 @@ class UserActivity : AppCompatActivity() {
                 }
             }
     }
+
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { i("Map Loaded") }
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
+                            user.lat = location.lat
+                            user.lng = location.lng
+                            user.zoom = location.zoom
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> {
+                    }
+                    else -> {
+                    }
+                }
+            }
     }
-
-    }
+}
