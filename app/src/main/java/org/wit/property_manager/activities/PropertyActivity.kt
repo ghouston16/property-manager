@@ -66,6 +66,7 @@ class PropertyActivity : AppCompatActivity() {
             property.type = binding.propertyType.text.toString()
             property.status = binding.propertyStatus.text.toString()
             property.agent = user.id
+            property.image = property.image
             if (property.title.isEmpty()) {
                 Snackbar.make(it, R.string.enter_property_title, Snackbar.LENGTH_LONG)
                     .show()
@@ -136,7 +137,7 @@ class PropertyActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(property.image)
                                 .into(binding.propertyImage)
-                            binding.chooseImage.setText(R.string.change_property_image)
+                            binding.chooseImage.setText(R.string.add_property_image)
                             if (property.image != Uri.EMPTY) {
                                 binding.chooseImage.setText(R.string.change_property_image)
                             }
