@@ -53,6 +53,7 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
     override fun create(property: PropertyModel) {
         property.id = generateRandomId()
         properties.add(property)
+        userProperties.clear()
         serialize()
     }
 
@@ -70,6 +71,7 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
             foundProperty.lat = property.lat
             foundProperty.lng = property.lng
             foundProperty.zoom = property.zoom
+            userProperties.clear()
             logAll()
         }
         serialize()
@@ -80,6 +82,15 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         serialize()
         // todo - find how to pass id of property to be deleted
     }
+    override fun deleteByUser(id: Long) {
+        for (property in userProperties) {
+            properties.remove(property)
+        }
+        userProperties.clear()
+        serialize()
+        // todo - find how to pass id of property to be deleted
+    }
+
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(properties, listType)

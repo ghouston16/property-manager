@@ -6,4 +6,5 @@ interface PropertyStore {
     fun create(property: PropertyModel)
     fun update(property: PropertyModel)
     fun delete(property: PropertyModel)
+    fun deleteByUser(id: Long)
 }
