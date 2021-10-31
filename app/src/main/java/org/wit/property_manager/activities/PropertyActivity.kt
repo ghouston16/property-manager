@@ -99,6 +99,10 @@ class PropertyActivity : AppCompatActivity() {
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
+        binding.btnDelete.setOnClickListener{
+            app.properties.delete(property)
+            finish()
+        }
         registerMapCallback()
     }
 
@@ -109,12 +113,6 @@ class PropertyActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
-            R.id.item_delete -> {
-                app.properties.delete(property)
-                finish()
-            }
-        }
         when (item.itemId) {
             R.id.item_cancel -> {
                 finish()

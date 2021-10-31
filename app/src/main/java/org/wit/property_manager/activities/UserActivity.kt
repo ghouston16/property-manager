@@ -4,11 +4,14 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.BoringLayout.make
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.make
 import com.squareup.picasso.Picasso
 import org.wit.property_manager.R
 import org.wit.property_manager.databinding.ActivityUserBinding
@@ -25,10 +28,12 @@ class UserActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+  //  private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var emailValid = true
     var passwordValid = true
 
     var user = UserModel()
+
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +43,9 @@ class UserActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
+        //user = intent.extras?.getParcelable("user_edit")!!
 
+      //  isAdmin = intent.extras?.getParcelable("isAdmin")!!
         app = application as MainApp
 
         //   Timber.plant(Timber.DebugTree())
@@ -84,21 +91,22 @@ class UserActivity : AppCompatActivity() {
                             user.zoom = location.zoom
                         }
                         app.users.update(user.copy())
-                        Snackbar
-                            .make(
-                                it,
-                                "User Updated Successful",
-                                Snackbar.LENGTH_LONG
+                            val launcherIntent = Intent(this, UserListActivity::class.java)
+                                .putExtra("user", user)
+                            startActivityForResult(launcherIntent, 0)
+                        Toast
+                            .makeText(
+                                app.applicationContext,
+                                "User Updated Successfully",
+                                Toast.LENGTH_SHORT
                             )
                             .show()
                     } else {
                         binding.btnAdd.setText(R.string.button_addUser)
                         app.users.create(user.copy())
+                        val launcherIntent = Intent(this, UserListActivity::class.java)
+                        startActivityForResult(launcherIntent,0)
                     }
-                    setResult(RESULT_OK)
-                    val launcherIntent = Intent(this, PropertyListActivity::class.java)
-                        .putExtra("user", user)
-                    startActivityForResult(launcherIntent, 0)
                 } else {
                     Snackbar
                         .make(it, "Please enter a valid Email & Password", Snackbar.LENGTH_LONG)
@@ -121,6 +129,23 @@ class UserActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
+        binding.btnDelete.setOnClickListener{
+            app.users.delete(user)
+           if (intent.hasExtra("admin")){
+               val launcherIntent = Intent(this, SignupActivity::class.java)
+               startActivityForResult(launcherIntent, 0)
+           }else {
+               val launcherIntent = Intent(this, SignupActivity::class.java)
+               startActivityForResult(launcherIntent, 0)
+           }
+               Toast
+                   .makeText(
+                       app.applicationContext,
+                       "User Deleted",
+                       Toast.LENGTH_SHORT
+                   )
+                   .show()
+        }
         registerImagePickerCallback()
         registerMapCallback()
     }
@@ -131,19 +156,22 @@ class UserActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item?.itemId) {
-            R.id.item_delete -> {
-                app.users.delete(user)
-                finish()
-            }
-        }
         when (item.itemId) {
             R.id.item_cancel -> {
                 finish()
             }
         }
-        return super.onOptionsItemSelected(item)
-    }
+        when (item.itemId) {
+            R.id.item_settings -> {
+                var user = UserModel()
+                user = intent.extras?.getParcelable("user")!!
+                val launcherIntent = Intent(this, UserActivity::class.java)
+                launcherIntent.putExtra("user_edit", user)
+                startActivityForResult(launcherIntent, 0)
+            }
+        }
+            return super.onOptionsItemSelected(item)
+        }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =

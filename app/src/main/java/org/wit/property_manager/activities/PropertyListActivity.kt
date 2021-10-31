@@ -25,6 +25,8 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     val user = UserModel()
+    var isAdmin = false
+    val admin="gh@wit.ie"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
@@ -64,14 +66,15 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
             R.id.item_settings -> {
                 var user = UserModel()
                 user = intent.extras?.getParcelable("user")!!
+                if(user.email==admin){
+                    isAdmin=true
+                }
                 val launcherIntent = Intent(this, UserActivity::class.java)
                 launcherIntent.putExtra("user_edit", user)
+                launcherIntent.putExtra("isAdmin", isAdmin)
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
-
-
-
         return super.onOptionsItemSelected(item)
     }
 

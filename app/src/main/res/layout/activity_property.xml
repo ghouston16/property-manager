@@ -138,6 +138,18 @@
                     android:text="@string/button_addProperty"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp" />
+                <Button
+                    android:id="@+id/btnDelete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorWarning"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:stateListAnimator="@null"
+                    android:text="@string/button_deleteProperty"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp" />
 
             </LinearLayout>
         </ScrollView>

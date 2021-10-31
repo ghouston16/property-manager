@@ -23,6 +23,8 @@ class UserListActivity : AppCompatActivity(), UserListener {
     private lateinit var binding: ActivityUserListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     val user = UserModel()
+
+   // val admin = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserListBinding.inflate(layoutInflater)
