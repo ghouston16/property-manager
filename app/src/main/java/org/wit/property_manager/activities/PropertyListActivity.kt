@@ -26,8 +26,6 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var user = UserModel()
-    var isAdmin = false
-    val admin="gh@wit.ie"
     var currentUser = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

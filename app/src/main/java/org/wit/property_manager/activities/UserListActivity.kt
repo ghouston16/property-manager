@@ -16,6 +16,7 @@ import org.wit.property_manager.adapters.UserListener
 import org.wit.property_manager.databinding.ActivityUserListBinding
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.UserModel
+import timber.log.Timber.i
 
 class UserListActivity : AppCompatActivity(), UserListener {
 
@@ -23,7 +24,8 @@ class UserListActivity : AppCompatActivity(), UserListener {
     private lateinit var binding: ActivityUserListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     val user = UserModel()
-
+    var currentUser = UserModel()
+    var isAdmin = true
    // val admin = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +38,10 @@ class UserListActivity : AppCompatActivity(), UserListener {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
+        if (intent.hasExtra("current_user")){
+            currentUser = intent.extras?.getParcelable<UserModel>("current_user")!!
+            i("$currentUser")
+            }
         loadUsers()
 
         registerRefreshCallback()
@@ -50,7 +56,8 @@ class UserListActivity : AppCompatActivity(), UserListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, UserActivity::class.java)
-                refreshIntentLauncher.launch(launcherIntent)
+                launcherIntent.putExtra("current_user", currentUser)
+                startActivityForResult(launcherIntent,0)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -58,7 +65,7 @@ class UserListActivity : AppCompatActivity(), UserListener {
 
     override fun onUserClick(user: UserModel) {
         val launcherIntent = Intent(this, UserActivity::class.java)
-        launcherIntent.putExtra("user_edit", user)
+        launcherIntent.putExtra("user_edit", user).putExtra("current_user",currentUser)
         refreshIntentLauncher.launch(launcherIntent)
     }
 

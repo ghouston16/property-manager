@@ -100,7 +100,7 @@ class PropertyActivity : AppCompatActivity() {
                         .show()
                 }
                 val launcherIntent = Intent(this, PropertyListActivity::class.java)
-                    .putExtra("current_user", currentUser)
+                    launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
                 startActivityForResult(launcherIntent, 0)
             }
         }

@@ -100,7 +100,7 @@ class SignupActivity : AppCompatActivity() {
                         i("User Logged In $person")
                         if (candidate.email == admin) {
                             val launcherIntent = Intent(this, UserListActivity::class.java)
-                            launcherIntent.putExtra("user", person)
+                            launcherIntent.putExtra("user", person).putExtra("current_user", person)
                             startActivityForResult(launcherIntent, 0)
                         } else {
                             val launcherIntent = Intent(this, PropertyListActivity::class.java)

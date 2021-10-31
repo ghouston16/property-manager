@@ -49,6 +49,10 @@ class UserActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbarAdd)
         if (intent.hasExtra("current_user")) {
             currentUser = intent.extras?.getParcelable("current_user")!!
+            i("Current USER:$currentUser")
+        }
+        if (currentUser.email ==admin[0]){
+            isAdmin =true
         }
         app = application as MainApp
 
@@ -71,10 +75,8 @@ class UserActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnAdd.setOnClickListener() { user.email = binding.userEmail.text.toString()
-            if (currentUser.email == admin[0]) {
-                isAdmin = true
-            }
+        binding.btnAdd.setOnClickListener() {
+            user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
             if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
                 passwordValid = user.password.length >= 8
@@ -97,9 +99,6 @@ class UserActivity : AppCompatActivity() {
                             user.zoom = location.zoom
                         }
                         app.users.update(user.copy())
-                        val launcherIntent = Intent(this, UserListActivity::class.java)
-                            launcherIntent.putExtra("user", user)
-                        startActivityForResult(launcherIntent, 0)
                         Toast
                             .makeText(
                                 app.applicationContext,
@@ -109,7 +108,9 @@ class UserActivity : AppCompatActivity() {
                             .show()
                         if (isAdmin) {
                             val launcherIntent = Intent(this, UserListActivity::class.java)
-                            launcherIntent.putExtra("current_user", currentUser)
+                            launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
+                            // remove log
+                            i("$currentUser")
                             startActivityForResult(launcherIntent, 0)
                         } else {
                             val launcherIntent = Intent(this, PropertyListActivity::class.java)
@@ -120,7 +121,7 @@ class UserActivity : AppCompatActivity() {
                         binding.btnAdd.setText(R.string.button_addUser)
                         app.users.create(user.copy())
                         val launcherIntent = Intent(this, UserListActivity::class.java)
-                        launcherIntent.putExtra("current_user", currentUser).putExtra("user",user)
+                        launcherIntent.putExtra("current_user", currentUser).putExtra("user",currentUser)
                         startActivityForResult(launcherIntent, 0)
                     }
                 } else {
@@ -148,7 +149,8 @@ class UserActivity : AppCompatActivity() {
         binding.btnDelete.setOnClickListener {
             app.users.delete(user)
             if (isAdmin){
-                val launcherIntent = Intent(this, SignupActivity::class.java)
+                val launcherIntent = Intent(this, UserListActivity::class.java)
+                launcherIntent.putExtra("current_user",currentUser)
                 startActivityForResult(launcherIntent, 0)
             } else {
                 val launcherIntent = Intent(this, SignupActivity::class.java)
