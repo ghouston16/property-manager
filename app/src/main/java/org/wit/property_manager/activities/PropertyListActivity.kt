@@ -27,6 +27,8 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var user = UserModel()
     var currentUser = UserModel()
+    var isAdmin = false
+    val admin = mutableListOf<String>("gh@wit.ie")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
@@ -38,6 +40,9 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         app = application as MainApp
         if (intent.hasExtra("current_user")) {
             currentUser = intent.extras?.getParcelable("current_user")!!
+        }
+        if (currentUser.email == admin[0]) {
+            isAdmin = true
         }
         i("$currentUser")
 
@@ -87,7 +92,10 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     }
 
     private fun loadProperties() {
-        showProperties(app.properties.findAll())
+        if (isAdmin) {
+            showProperties(app.properties.findAll())
+        } else
+            showProperties(app.properties.findAll(currentUser.id))
     }
 
     fun showProperties (properties: List<PropertyModel>) {

@@ -25,6 +25,7 @@ fun generateRandomId(): Long {
 class PropertyJSONStore(private val context: Context) : PropertyStore {
 
     var properties = mutableListOf<PropertyModel>()
+    var userProperties = mutableListOf<PropertyModel>()
 
     init {
         if (exists(context, JSON_FILE)) {
@@ -36,6 +37,18 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         logAll()
         return properties
     }
+
+    override fun findAll(id: Long): MutableList<PropertyModel> {
+        properties = findAll()
+        for (property in properties){
+            if (property.agent == id){
+                userProperties.add(property)
+            }
+        }
+        logAll()
+        return userProperties
+    }
+
 
     override fun create(property: PropertyModel) {
         property.id = generateRandomId()
@@ -62,7 +75,8 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         serialize()
     }
     override fun delete(property: PropertyModel) {
-        properties.remove(property)
+            properties.remove(property)
+            userProperties.remove(property)
         serialize()
         // todo - find how to pass id of property to be deleted
     }

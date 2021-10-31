@@ -10,16 +10,27 @@ internal fun getId(): Long {
 
 class PropertyMemStore: PropertyStore {
     val properties = ArrayList<PropertyModel>()
+    val userProperties = ArrayList<PropertyModel>()
 
     override fun findAll(): List<PropertyModel>{
         return properties
     }
+    override fun findAll(id: Long): MutableList<PropertyModel> {
+        for (property in properties){
+            if (property.agent == id){
+                userProperties.add(property)
+            }
+        }
+        return userProperties
+    }
+
+
+
     override fun create(property:PropertyModel){
         property.id = getId()
         properties.add(property)
         logAll()
     }
-
     override fun delete(property: PropertyModel) {
         properties.remove(property)
     }
