@@ -38,17 +38,13 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
+        if (intent.hasExtra("current_user")) {
+            currentUser = intent.extras?.getParcelable("current_user")!!
+        }
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         loadProperties()
-       /*
-        val propertyList = app.properties.findAll()
-        for(x in propertyList) {
-            Picasso.get().load(x.image).resize(200, 200).into(binding.imageIcon)
-        }
-        
-        */
         registerRefreshCallback()
     }
 
@@ -59,23 +55,17 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         user = intent.extras?.getParcelable("user")!!
-        currentUser = user
-
+       // currentUser = user
         i("$user")
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, PropertyActivity::class.java).putExtra("user", user).putExtra("current_user",user)
+                val launcherIntent = Intent(this, PropertyActivity::class.java).putExtra("current_user", currentUser)
                 i("Current User $currentUser")
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
         when (item.itemId) {
             R.id.item_settings -> {
-               // var user = UserModel()
-               /* if(user.email==admin){
-                    isAdmin=true
-                }
-                */
                 val launcherIntent = Intent(this, UserActivity::class.java)
                 launcherIntent.putExtra("user_edit", user).putExtra("currentUser", currentUser)
                 refreshIntentLauncher.launch(launcherIntent)
@@ -86,7 +76,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     override fun onPropertyClick(property: PropertyModel) {
         val launcherIntent = Intent(this, PropertyActivity::class.java)
-        launcherIntent.putExtra("property_edit", property)
+        launcherIntent.putExtra("property_edit", property).putExtra("current_user", currentUser)
         refreshIntentLauncher.launch(launcherIntent)
     }
 

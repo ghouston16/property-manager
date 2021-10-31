@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
@@ -26,13 +27,14 @@ class PropertyActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityPropertyBinding
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
+    private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
 
     var property = PropertyModel()
     val user = UserModel()
     var edit = false
     var currentUser = UserModel()
     var isAdmin = false
-    val admin= mutableListOf<String>("gh@wit.ie")
+    val admin = mutableListOf<String>("gh@wit.ie")
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,13 +44,13 @@ class PropertyActivity : AppCompatActivity() {
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
-        if (intent.hasExtra("current_user")){
+        if (intent.hasExtra("current_user")) {
             currentUser = intent.extras?.getParcelable("current_user")!!
-            if (currentUser.email == admin[0]) {
-                isAdmin=true
-            }
-            i("Current user: $currentUser is Admin = $isAdmin")
         }
+        if (currentUser.email == admin[0]) {
+            isAdmin = true
+        }
+        i("Current user: $currentUser is Admin = $isAdmin")
         //   Timber.plant(Timber.DebugTree())
         i("Property Activity started...")
         if (intent.hasExtra("property_edit")) {
@@ -58,8 +60,7 @@ class PropertyActivity : AppCompatActivity() {
             binding.propertyDescription.setText(property.description)
             binding.propertyType.setText(property.type)
             binding.propertyStatus.setText(property.status)
-            // agent/user id
-            //property.agent = currentUser.id
+            // property.agent = property.agent
             Picasso.get()
                 .load(property.image)
                 .into(binding.propertyImage)
@@ -81,12 +82,27 @@ class PropertyActivity : AppCompatActivity() {
             } else {
                 if (edit) {
                     app.properties.update(property.copy())
+                    Toast
+                        .makeText(
+                            app.applicationContext,
+                            "Property Updated",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
                 } else {
                     app.properties.create(property.copy())
+                    Toast
+                        .makeText(
+                            app.applicationContext,
+                            "Property Added",
+                            Toast.LENGTH_SHORT
+                        )
+                        .show()
                 }
+                val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                    .putExtra("current_user", currentUser)
+                startActivityForResult(launcherIntent, 0)
             }
-            setResult(RESULT_OK)
-            finish()
         }
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
@@ -96,7 +112,6 @@ class PropertyActivity : AppCompatActivity() {
             i("Set Location Pressed")
         }
         binding.propertyLocation.setOnClickListener {
-            //  var location = Location(52.245696, -7.139102, 15f)
             val location = Location(52.245696, -7.139102, 15f)
             if (property.zoom != 0f) {
                 location.lat = property.lat
@@ -107,9 +122,19 @@ class PropertyActivity : AppCompatActivity() {
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
-        binding.btnDelete.setOnClickListener{
+        binding.btnDelete.setOnClickListener {
             app.properties.delete(property)
-            finish()
+            val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                .putExtra("current_user", currentUser)
+            startActivityForResult(launcherIntent,0)
+            Toast
+                .makeText(
+                    app.applicationContext,
+                    "Property Removed",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
+
         }
         registerMapCallback()
     }

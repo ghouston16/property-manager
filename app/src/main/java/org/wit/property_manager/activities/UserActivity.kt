@@ -28,7 +28,7 @@ class UserActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-  //  private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
     var emailValid = true
     var passwordValid = true
 
