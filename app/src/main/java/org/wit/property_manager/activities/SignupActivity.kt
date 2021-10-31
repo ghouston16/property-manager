@@ -105,6 +105,7 @@ class SignupActivity : AppCompatActivity() {
                         } else {
                             val launcherIntent = Intent(this, PropertyListActivity::class.java)
                             launcherIntent.putExtra("user", person)
+                            i("$person")
                             startActivityForResult(launcherIntent, 0)
                         }
                     } else {

@@ -29,9 +29,10 @@ class PropertyActivity : AppCompatActivity() {
 
     var property = PropertyModel()
     val user = UserModel()
-    var edit = false;
-    // var location = Location(52.245696, -7.139102, 15f)
-    //   val properties = ArrayList<PropertyModel>()
+    var edit = false
+    var currentUser = UserModel()
+    var isAdmin = false
+    val admin= mutableListOf<String>("gh@wit.ie")
     lateinit var app: MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +42,13 @@ class PropertyActivity : AppCompatActivity() {
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
         app = application as MainApp
-
+        if (intent.hasExtra("current_user")){
+            currentUser = intent.extras?.getParcelable("current_user")!!
+            if (currentUser.email == admin[0]) {
+                isAdmin=true
+            }
+            i("Current user: $currentUser is Admin = $isAdmin")
+        }
         //   Timber.plant(Timber.DebugTree())
         i("Property Activity started...")
         if (intent.hasExtra("property_edit")) {
@@ -51,7 +58,8 @@ class PropertyActivity : AppCompatActivity() {
             binding.propertyDescription.setText(property.description)
             binding.propertyType.setText(property.type)
             binding.propertyStatus.setText(property.status)
-            property.agent = user.id
+            // agent/user id
+            //property.agent = currentUser.id
             Picasso.get()
                 .load(property.image)
                 .into(binding.propertyImage)
@@ -65,7 +73,7 @@ class PropertyActivity : AppCompatActivity() {
             property.description = binding.propertyDescription.text.toString()
             property.type = binding.propertyType.text.toString()
             property.status = binding.propertyStatus.text.toString()
-            property.agent = user.id
+            property.agent = currentUser.id
             property.image = property.image
             if (property.title.isEmpty()) {
                 Snackbar.make(it, R.string.enter_property_title, Snackbar.LENGTH_LONG)

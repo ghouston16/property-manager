@@ -18,15 +18,17 @@ import org.wit.property_manager.databinding.ActivityPropertyListBinding
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
 import org.wit.property_manager.models.UserModel
+import timber.log.Timber.i
 
 class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-    val user = UserModel()
+    var user = UserModel()
     var isAdmin = false
     val admin="gh@wit.ie"
+    var currentUser = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
@@ -56,22 +58,26 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        user = intent.extras?.getParcelable("user")!!
+        currentUser = user
+
+        i("$user")
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, PropertyActivity::class.java)
+                val launcherIntent = Intent(this, PropertyActivity::class.java).putExtra("user", user).putExtra("current_user",user)
+                i("Current User $currentUser")
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
         when (item.itemId) {
             R.id.item_settings -> {
-                var user = UserModel()
-                user = intent.extras?.getParcelable("user")!!
-                if(user.email==admin){
+               // var user = UserModel()
+               /* if(user.email==admin){
                     isAdmin=true
                 }
+                */
                 val launcherIntent = Intent(this, UserActivity::class.java)
-                launcherIntent.putExtra("user_edit", user)
-                launcherIntent.putExtra("isAdmin", isAdmin)
+                launcherIntent.putExtra("user_edit", user).putExtra("currentUser", currentUser)
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
