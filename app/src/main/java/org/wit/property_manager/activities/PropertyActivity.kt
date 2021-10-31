@@ -126,7 +126,7 @@ class PropertyActivity : AppCompatActivity() {
             app.properties.delete(property)
             val launcherIntent = Intent(this, PropertyListActivity::class.java)
                 .putExtra("current_user", currentUser)
-            startActivityForResult(launcherIntent,0)
+            startActivityForResult(launcherIntent, 0)
             Toast
                 .makeText(
                     app.applicationContext,

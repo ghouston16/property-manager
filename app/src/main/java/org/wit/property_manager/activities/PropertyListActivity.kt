@@ -41,6 +41,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         if (intent.hasExtra("current_user")) {
             currentUser = intent.extras?.getParcelable("current_user")!!
         }
+        i("$currentUser")
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
@@ -59,16 +60,17 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         i("$user")
         when (item.itemId) {
             R.id.item_add -> {
-                val launcherIntent = Intent(this, PropertyActivity::class.java).putExtra("current_user", currentUser)
+                val launcherIntent = Intent(this, PropertyActivity::class.java)
+                    launcherIntent.putExtra("current_user", currentUser)
                 i("Current User $currentUser")
-                refreshIntentLauncher.launch(launcherIntent)
+                startActivityForResult(launcherIntent,0)
             }
         }
         when (item.itemId) {
             R.id.item_settings -> {
                 val launcherIntent = Intent(this, UserActivity::class.java)
-                launcherIntent.putExtra("user_edit", user).putExtra("currentUser", currentUser)
-                refreshIntentLauncher.launch(launcherIntent)
+                launcherIntent.putExtra("user_edit", user).putExtra("current_user", currentUser)
+                startActivityForResult(launcherIntent,0)
             }
         }
         return super.onOptionsItemSelected(item)

@@ -28,11 +28,15 @@ class UserActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityUserBinding
     private lateinit var mapIntentLauncher: ActivityResultLauncher<Intent>
-    private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var refreshIntentLauncher: ActivityResultLauncher<Intent>
     var emailValid = true
     var passwordValid = true
 
     var user = UserModel()
+    var edit = false
+    var currentUser = UserModel()
+    var isAdmin = false
+    val admin = mutableListOf<String>("gh@wit.ie")
 
     lateinit var app: MainApp
 
@@ -43,9 +47,9 @@ class UserActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-        //user = intent.extras?.getParcelable("user_edit")!!
-
-      //  isAdmin = intent.extras?.getParcelable("isAdmin")!!
+        if (intent.hasExtra("current_user")) {
+            currentUser = intent.extras?.getParcelable("current_user")!!
+        }
         app = application as MainApp
 
         //   Timber.plant(Timber.DebugTree())
@@ -67,8 +71,10 @@ class UserActivity : AppCompatActivity() {
             }
         }
 
-        binding.btnAdd.setOnClickListener() {
-            user.email = binding.userEmail.text.toString()
+        binding.btnAdd.setOnClickListener() { user.email = binding.userEmail.text.toString()
+            if (currentUser.email == admin[0]) {
+                isAdmin = true
+            }
             user.password = binding.userPassword.text.toString()
             if (user.email.isNotEmpty() && user.password.isNotEmpty()) {
                 passwordValid = user.password.length >= 8
@@ -91,9 +97,9 @@ class UserActivity : AppCompatActivity() {
                             user.zoom = location.zoom
                         }
                         app.users.update(user.copy())
-                            val launcherIntent = Intent(this, UserListActivity::class.java)
-                                .putExtra("user", user)
-                            startActivityForResult(launcherIntent, 0)
+                        val launcherIntent = Intent(this, UserListActivity::class.java)
+                            launcherIntent.putExtra("user", user)
+                        startActivityForResult(launcherIntent, 0)
                         Toast
                             .makeText(
                                 app.applicationContext,
@@ -101,11 +107,21 @@ class UserActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             )
                             .show()
+                        if (isAdmin) {
+                            val launcherIntent = Intent(this, UserListActivity::class.java)
+                            launcherIntent.putExtra("current_user", currentUser)
+                            startActivityForResult(launcherIntent, 0)
+                        } else {
+                            val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                            launcherIntent.putExtra("current_user", currentUser).putExtra("user",currentUser)
+                            startActivityForResult(launcherIntent, 0)
+                        }
                     } else {
                         binding.btnAdd.setText(R.string.button_addUser)
                         app.users.create(user.copy())
                         val launcherIntent = Intent(this, UserListActivity::class.java)
-                        startActivityForResult(launcherIntent,0)
+                        launcherIntent.putExtra("current_user", currentUser).putExtra("user",user)
+                        startActivityForResult(launcherIntent, 0)
                     }
                 } else {
                     Snackbar
@@ -118,7 +134,7 @@ class UserActivity : AppCompatActivity() {
         binding.userLocation.setOnClickListener {
             var location = Location(52.245696, -7.139102, 15f)
             if (user.zoom != 0f) {
-                location.lat =  user.lat
+                location.lat = user.lat
                 location.lng = user.lng
                 location.zoom = user.zoom
             }
@@ -129,22 +145,22 @@ class UserActivity : AppCompatActivity() {
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher)
         }
-        binding.btnDelete.setOnClickListener{
+        binding.btnDelete.setOnClickListener {
             app.users.delete(user)
-           if (intent.hasExtra("admin")){
-               val launcherIntent = Intent(this, SignupActivity::class.java)
-               startActivityForResult(launcherIntent, 0)
-           }else {
-               val launcherIntent = Intent(this, SignupActivity::class.java)
-               startActivityForResult(launcherIntent, 0)
-           }
-               Toast
-                   .makeText(
-                       app.applicationContext,
-                       "User Deleted",
-                       Toast.LENGTH_SHORT
-                   )
-                   .show()
+            if (isAdmin){
+                val launcherIntent = Intent(this, SignupActivity::class.java)
+                startActivityForResult(launcherIntent, 0)
+            } else {
+                val launcherIntent = Intent(this, SignupActivity::class.java)
+                startActivityForResult(launcherIntent, 0)
+            }
+            Toast
+                .makeText(
+                    app.applicationContext,
+                    "User Deleted",
+                    Toast.LENGTH_SHORT
+                )
+                .show()
         }
         registerImagePickerCallback()
         registerMapCallback()
@@ -166,12 +182,12 @@ class UserActivity : AppCompatActivity() {
                 var user = UserModel()
                 user = intent.extras?.getParcelable("user")!!
                 val launcherIntent = Intent(this, UserActivity::class.java)
-                launcherIntent.putExtra("user_edit", user)
+                    launcherIntent.putExtra("user_edit", user).putExtra("current_user", currentUser)
                 startActivityForResult(launcherIntent, 0)
             }
         }
-            return super.onOptionsItemSelected(item)
-        }
+        return super.onOptionsItemSelected(item)
+    }
 
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
@@ -209,7 +225,8 @@ class UserActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Location ${result.data.toString()}")
-                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            val location =
+                                result.data!!.extras?.getParcelable<Location>("location")!!
                             i("Location == $location")
                             user.lat = location.lat
                             user.lng = location.lng
