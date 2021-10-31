@@ -156,10 +156,9 @@ class UserActivity : AppCompatActivity() {
                             Picasso.get()
                                 .load(user.image)
                                 .into(binding.userImage)
-                            binding.chooseImage.setText(R.string.change_property_image)
+                            binding.chooseImage.setText(R.string.add_property_image)
                             if (user.image != Uri.EMPTY) {
                                 binding.chooseImage.setText(R.string.change_property_image)
-                                app.users.update(user)
                             }
                         } // end of if
                     }
