@@ -12,6 +12,7 @@ class MainApp : Application() {
     lateinit var properties: PropertyStore
     val user = UserModel()
     lateinit var users : UserStore
+    //bval admin = "gh@wit.ie"
 
     override fun onCreate() {
         super.onCreate()

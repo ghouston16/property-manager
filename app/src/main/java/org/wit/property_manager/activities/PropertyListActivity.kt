@@ -17,32 +17,33 @@ import org.wit.property_manager.databinding.ActivityPropertyListBinding
 //import org.wit.property_manager.databinding.imageIcon
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
+import org.wit.property_manager.models.UserModel
+import timber.log.Timber.i
 
 class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-
+    var user = UserModel()
+    var currentUser = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
 
         app = application as MainApp
+        if (intent.hasExtra("current_user")) {
+            currentUser = intent.extras?.getParcelable("current_user")!!
+        }
+        i("$currentUser")
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         loadProperties()
-       /*
-        val propertyList = app.properties.findAll()
-        for(x in propertyList) {
-            Picasso.get().load(x.image).resize(200, 200).into(binding.imageIcon)
-        }
-        
-        */
         registerRefreshCallback()
     }
 
@@ -52,10 +53,22 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        user = intent.extras?.getParcelable("user")!!
+       // currentUser = user
+        i("$user")
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, PropertyActivity::class.java)
-                refreshIntentLauncher.launch(launcherIntent)
+                    launcherIntent.putExtra("current_user", currentUser)
+                i("Current User $currentUser")
+                startActivityForResult(launcherIntent,0)
+            }
+        }
+        when (item.itemId) {
+            R.id.item_settings -> {
+                val launcherIntent = Intent(this, UserActivity::class.java)
+                launcherIntent.putExtra("user_edit", user).putExtra("current_user", currentUser)
+                startActivityForResult(launcherIntent,0)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -63,7 +76,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     override fun onPropertyClick(property: PropertyModel) {
         val launcherIntent = Intent(this, PropertyActivity::class.java)
-        launcherIntent.putExtra("property_edit", property)
+        launcherIntent.putExtra("property_edit", property).putExtra("current_user", currentUser)
         refreshIntentLauncher.launch(launcherIntent)
     }
 

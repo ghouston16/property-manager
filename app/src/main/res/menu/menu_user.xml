@@ -5,9 +5,4 @@
         android:id="@+id/item_cancel"
         android:title="@string/menu_cancelProperty"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/item_delete"
-        android:title="@string/button_deleteProperty"
-        android:textColor="@color/colorWarning"
-        app:showAsAction="always"/>
 </menu>
