@@ -58,13 +58,7 @@ class UserActivity : AppCompatActivity() {
                 binding.btnAdd.setText(R.string.button_updateUser)
             }
         }
-        /*
-        if (intent.hasExtra("location")){
-            var location = Location(52.245696, -7.139102, 15f)
 
-            }
-
-         */
         binding.btnAdd.setOnClickListener() {
             user.email = binding.userEmail.text.toString()
             user.password = binding.userPassword.text.toString()
@@ -165,6 +159,7 @@ class UserActivity : AppCompatActivity() {
                             binding.chooseImage.setText(R.string.change_property_image)
                             if (user.image != Uri.EMPTY) {
                                 binding.chooseImage.setText(R.string.change_property_image)
+                                app.users.update(user)
                             }
                         } // end of if
                     }

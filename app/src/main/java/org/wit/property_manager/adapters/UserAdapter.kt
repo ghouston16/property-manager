@@ -34,8 +34,8 @@ class UserAdapter constructor(private var users: List<UserModel>,
 
         fun bind(user: UserModel, listener: UserListener) {
             binding.userEmail.text = user.email
-         //   binding.description.text = user.description
-          //  Picasso.get().load(user.image).resize(200,200).into(binding.imageIcon)
+
+            Picasso.get().load(user.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onUserClick(user) }
         }
     }
