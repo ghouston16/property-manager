@@ -45,9 +45,10 @@ class UserActivity : AppCompatActivity() {
         i("User Activity started...")
         if (intent.hasExtra("user_edit")) {
             edit = true
-            user = intent.extras?.getParcelable("user_edit")!!
+            user = intent.extras?.getParcelable<UserModel>("user_edit")!!
             binding.userEmail.setText(user.email)
             binding.userPassword.setText(user.password)
+            i("$user")
             Picasso.get()
                 .load(user.image)
                 .into(binding.userImage)
@@ -95,7 +96,9 @@ class UserActivity : AppCompatActivity() {
                         app.users.create(user.copy())
                     }
                     setResult(RESULT_OK)
-                    finish()
+                    val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                        .putExtra("user", user)
+                    startActivityForResult(launcherIntent, 0)
                 } else {
                     Snackbar
                         .make(it, "Please enter a valid Email & Password", Snackbar.LENGTH_LONG)

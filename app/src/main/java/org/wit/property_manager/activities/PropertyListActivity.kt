@@ -17,16 +17,18 @@ import org.wit.property_manager.databinding.ActivityPropertyListBinding
 //import org.wit.property_manager.databinding.imageIcon
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.PropertyModel
+import org.wit.property_manager.models.UserModel
 
 class PropertyListActivity : AppCompatActivity(), PropertyListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
-
+    val user = UserModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
@@ -58,6 +60,18 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                 refreshIntentLauncher.launch(launcherIntent)
             }
         }
+        when (item.itemId) {
+            R.id.item_settings -> {
+                var user = UserModel()
+                user = intent.extras?.getParcelable("user")!!
+                val launcherIntent = Intent(this, UserActivity::class.java)
+                launcherIntent.putExtra("user_edit", user)
+                refreshIntentLauncher.launch(launcherIntent)
+            }
+        }
+
+
+
         return super.onOptionsItemSelected(item)
     }
 

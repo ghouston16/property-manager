@@ -7,4 +7,9 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/menu_addProperty"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_settings"
+        android:icon="@android:drawable/ic_menu_manage"
+        android:title="@string/menu_addProperty"
+        app:showAsAction="always" />
 </menu>

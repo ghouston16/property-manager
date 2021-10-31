@@ -30,7 +30,6 @@ class UserListActivity : AppCompatActivity(), UserListener {
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
 
-
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)

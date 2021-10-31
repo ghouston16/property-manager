@@ -97,12 +97,14 @@ class SignupActivity : AppCompatActivity() {
             if (candidate.email.isNotEmpty() && candidate.password.isNotEmpty()) {
                 for (person in userList) {
                     if (candidate.email == person.email && candidate.password == person.password) {
-                        i("User Logged In $user")
+                        i("User Logged In $person")
                         if (candidate.email == admin) {
                             val launcherIntent = Intent(this, UserListActivity::class.java)
+                            launcherIntent.putExtra("user", person)
                             startActivityForResult(launcherIntent, 0)
                         } else {
                             val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                            launcherIntent.putExtra("user", person)
                             startActivityForResult(launcherIntent, 0)
                         }
                     } else {
