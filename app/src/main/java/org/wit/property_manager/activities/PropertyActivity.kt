@@ -148,7 +148,10 @@ class PropertyActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_cancel -> {
-                finish()
+      //          app.properties.clearUserProperties()
+                val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                launcherIntent.putExtra("current_user", currentUser)
+                startActivityForResult(launcherIntent,0)
             }
         }
         return super.onOptionsItemSelected(item)

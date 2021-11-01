@@ -26,6 +26,7 @@ fun generateRandomId(): Long {
 class UserJSONStore(private val context: Context) : UserStore {
 
     var users = mutableListOf<UserModel>()
+    var admin = mutableListOf<String>("gh@wit.ie")
 
     init {
         if (exists(context, JSON_FILE)) {
@@ -60,6 +61,10 @@ class UserJSONStore(private val context: Context) : UserStore {
     }
     override fun delete(user: UserModel) {
         users.remove(user)
+        serialize()
+    }
+    override fun deleteAll() {
+        users.clear()
         serialize()
     }
     private fun serialize() {

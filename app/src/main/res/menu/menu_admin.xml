@@ -8,18 +8,11 @@
         android:title="@string/menu_addProperty"
         app:showAsAction="always" />
     <item
-        android:visible="true"
-        android:id="@+id/item_settings"
-        android:icon="@android:drawable/ic_menu_manage"
-        android:title="@string/menu_addProperty"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/item_deleteAll"
         android:icon="@android:drawable/ic_menu_delete"
         android:title="@string/menu_deleteAll"
         app:showAsAction="always" />
     <item
-        android:visible="false"
         android:id="@+id/item_properties"
         android:icon="@android:drawable/ic_menu_mylocation"
         android:title="@string/menu_view_placemarks"
