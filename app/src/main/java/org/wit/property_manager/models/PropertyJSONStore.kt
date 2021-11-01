@@ -91,6 +91,10 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         // todo - find how to pass id of property to be deleted
     }
 
+    override fun deleteAll() {
+        properties.clear()
+        serialize()
+    }
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(properties, listType)
