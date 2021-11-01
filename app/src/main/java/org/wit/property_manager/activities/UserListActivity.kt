@@ -48,7 +48,8 @@ class UserListActivity : AppCompatActivity(), UserListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        //menu.getItem(3).isVisible= true
+        menuInflater.inflate(R.menu.menu_admin, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -60,6 +61,21 @@ class UserListActivity : AppCompatActivity(), UserListener {
                 startActivityForResult(launcherIntent,0)
             }
         }
+        when (item.itemId) {
+            R.id.item_properties -> {
+                val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
+                startActivityForResult(launcherIntent,0)
+            }
+        }
+        when (item.itemId) {
+            R.id.item_deleteAll -> {
+                app.users.deleteAll()
+                val launcherIntent = Intent(this, UserListActivity::class.java)
+                launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
+                startActivityForResult(launcherIntent,0)
+            }
+    }
         return super.onOptionsItemSelected(item)
     }
 

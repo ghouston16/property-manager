@@ -29,6 +29,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     var currentUser = UserModel()
     var isAdmin = false
     val admin = mutableListOf<String>("gh@wit.ie")
+    var properties= PropertyModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyListBinding.inflate(layoutInflater)
@@ -53,6 +54,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
+      //  menu.getItem(2).isVisible = true
         menuInflater.inflate(R.menu.menu_main, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -76,6 +78,18 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                 startActivityForResult(launcherIntent,0)
             }
         }
+        when (item.itemId) {
+            R.id.item_deleteAll -> {
+                if (isAdmin){ app.properties.deleteAll()}
+                else {
+                    app.properties.deleteByUser(currentUser.id)
+                    val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                    launcherIntent.putExtra("current_user", currentUser)
+                        .putExtra("user", currentUser)
+                    startActivityForResult(launcherIntent, 0)
+                }
+            }
+        }
         return super.onOptionsItemSelected(item)
     }
 
@@ -92,14 +106,16 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     }
 
     private fun loadProperties() {
-        if (isAdmin) {
+        if (currentUser.email == admin[0]) {
+            isAdmin = true
             showProperties(app.properties.findAll())
-        } else
+        } else {
             showProperties(app.properties.findAll(currentUser.id))
+        }
     }
 
     fun showProperties (properties: List<PropertyModel>) {
-        binding.recyclerView.adapter = PropertyAdapter(properties, this)
-        binding.recyclerView.adapter?.notifyDataSetChanged()
+            binding.recyclerView.adapter = PropertyAdapter(properties, this)
+            binding.recyclerView.adapter?.notifyDataSetChanged()
     }
 }

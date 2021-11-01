@@ -14,7 +14,7 @@ internal fun getUserId(): Long {
 // todo user - json store
 class UserMemStore: UserStore {
     val users = ArrayList<UserModel>()
-
+    var admin = mutableListOf<String>("gh@wit.ie")
 
     override fun findAll(): List<UserModel> {
         return users
@@ -39,6 +39,10 @@ class UserMemStore: UserStore {
 }
     override fun delete(user: UserModel) {
         users.remove(user)
+    }
+
+    override fun deleteAll() {
+        users.clear()
     }
     fun logAll() {
         users.forEach{ i("${it}") }

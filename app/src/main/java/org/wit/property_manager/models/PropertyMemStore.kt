@@ -34,6 +34,18 @@ class PropertyMemStore: PropertyStore {
     override fun delete(property: PropertyModel) {
         properties.remove(property)
     }
+    override fun deleteByUser(id: Long) {
+        for (property in properties){
+            if (property.agent == id){
+                properties.remove(property)
+            }
+        }
+        // todo - find how to pass id of property to be deleted
+    }
+    override fun deleteAll(){
+        logAll()
+        properties.clear()
+    }
     override fun update(property: PropertyModel) {
         var foundProperty: PropertyModel? = properties.find { p -> p.id == property.id }
         if (foundProperty != null) {
