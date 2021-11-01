@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -76,6 +77,13 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                 val launcherIntent = Intent(this, UserActivity::class.java)
                 launcherIntent.putExtra("user_edit", user).putExtra("current_user", currentUser)
                 startActivityForResult(launcherIntent,0)
+                Toast
+                    .makeText(
+                        app.applicationContext,
+                        "Getting User Settings",
+                        Toast.LENGTH_SHORT
+                    )
+                    .show()
             }
         }
         when (item.itemId) {
@@ -84,6 +92,13 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                 else {
                     app.properties.deleteByUser(currentUser.id)
                 }
+                Toast
+                    .makeText(
+                        app.applicationContext,
+                        "Properties Deleted",
+                        Toast.LENGTH_SHORT
+                    )
+                    .show()
                     val launcherIntent = Intent(this, PropertyListActivity::class.java)
                     launcherIntent.putExtra("current_user", currentUser)
                         .putExtra("user", currentUser)
