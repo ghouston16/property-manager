@@ -83,13 +83,14 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                 if (isAdmin){ app.properties.deleteAll()}
                 else {
                     app.properties.deleteByUser(currentUser.id)
+                }
                     val launcherIntent = Intent(this, PropertyListActivity::class.java)
                     launcherIntent.putExtra("current_user", currentUser)
                         .putExtra("user", currentUser)
                     startActivityForResult(launcherIntent, 0)
                 }
             }
-        }
+
         return super.onOptionsItemSelected(item)
     }
 
