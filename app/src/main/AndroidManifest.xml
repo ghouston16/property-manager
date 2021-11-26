@@ -11,6 +11,7 @@
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".main.MainApp"
@@ -20,11 +21,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Property">
-
+        <activity
+            android:name=".activities.PropertyMapsActivity"
+            android:label="@string/title_activity_property_maps"
+            android:theme="@style/Theme.Property.NoActionBar" />
         <activity
             android:name=".activities.SignupActivity"
-            android:label="@string/title_activity_signup">
-
+            android:label="@string/title_activity_signup"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,12 +56,11 @@
         <activity android:name=".activities.PropertyActivity" />
         <activity
             android:name=".activities.UserListActivity"
-            android:label="@string/title_activity_user_list">
-        </activity>
+            android:label="@string/title_activity_user_list"></activity>
         <activity
             android:name=".activities.UserActivity"
             android:label="@string/title_activity_user"
-            android:theme="@style/Theme.Property.NoActionBar"></activity>
+            android:theme="@style/Theme.Property.NoActionBar" />
     </application>
 
 </manifest>

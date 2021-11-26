@@ -26,6 +26,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyListBinding
     private lateinit var refreshIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapsIntentLauncher : ActivityResultLauncher<Intent>
     var user = UserModel()
     var currentUser = UserModel()
     var isAdmin = false
@@ -52,6 +53,7 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         binding.recyclerView.layoutManager = layoutManager
         loadProperties()
         registerRefreshCallback()
+        registerMapCallback()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -88,8 +90,9 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
         }
         when (item.itemId) {
             R.id.item_deleteAll -> {
-                if (isAdmin){ app.properties.deleteAll()}
-                else {
+                if (isAdmin) {
+                    app.properties.deleteAll()
+                } else {
                     app.properties.deleteByUser(currentUser.id)
                 }
                 Toast
@@ -99,12 +102,17 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
                         Toast.LENGTH_SHORT
                     )
                     .show()
-                    val launcherIntent = Intent(this, PropertyListActivity::class.java)
-                    launcherIntent.putExtra("current_user", currentUser)
-                        .putExtra("user", currentUser)
-                    startActivityForResult(launcherIntent, 0)
-                }
+                val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                launcherIntent.putExtra("current_user", currentUser)
+                    .putExtra("user", currentUser)
+                startActivityForResult(launcherIntent, 0)
             }
+
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, PropertyMapsActivity::class.java)
+                mapsIntentLauncher.launch(launcherIntent)
+            }
+        }
 
         return super.onOptionsItemSelected(item)
     }
@@ -133,5 +141,10 @@ class PropertyListActivity : AppCompatActivity(), PropertyListener {
     fun showProperties (properties: List<PropertyModel>) {
             binding.recyclerView.adapter = PropertyAdapter(properties, this)
             binding.recyclerView.adapter?.notifyDataSetChanged()
+    }
+    private fun registerMapCallback() {
+        mapsIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { }
     }
 }
