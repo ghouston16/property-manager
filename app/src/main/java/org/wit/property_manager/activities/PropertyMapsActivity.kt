@@ -14,11 +14,6 @@ import org.wit.property_manager.databinding.ContentPropertyMapsBinding
 import org.wit.property_manager.main.MainApp
 
 class PropertyMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
-    override fun onMarkerClick(marker: Marker): Boolean {
-        val currentTitle: TextView = findViewById<TextView>(R.id.currentTitle)
-        currentTitle.text = marker.title
-        return false
-    }
     lateinit var app: MainApp
     private lateinit var binding: ActivityPropertyMapsBinding
         private lateinit var contentBinding: ContentPropertyMapsBinding
@@ -63,6 +58,11 @@ class PropertyMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListene
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         contentBinding.mapView.onSaveInstanceState(outState)
+    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+        val currentTitle: TextView = findViewById<TextView>(R.id.currentTitle)
+        currentTitle.text = marker.title
+        return false
     }
     fun configureMap() {
         map.uiSettings.isZoomControlsEnabled = true

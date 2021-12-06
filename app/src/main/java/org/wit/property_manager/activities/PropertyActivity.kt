@@ -41,8 +41,8 @@ class PropertyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPropertyBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbarAdd.title = title
-        setSupportActionBar(binding.toolbarAdd)
+        binding.toolbar.title = title
+        setSupportActionBar(binding.toolbar)
         app = application as MainApp
         if (intent.hasExtra("current_user")) {
             currentUser = intent.extras?.getParcelable("current_user")!!
@@ -122,6 +122,7 @@ class PropertyActivity : AppCompatActivity() {
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
+        /*
         binding.btnDelete.setOnClickListener {
             app.properties.delete(property)
             val launcherIntent = Intent(this, PropertyListActivity::class.java)
@@ -136,6 +137,8 @@ class PropertyActivity : AppCompatActivity() {
                 .show()
 
         }
+
+         */
         registerMapCallback()
     }
 
