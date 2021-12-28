@@ -48,6 +48,10 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         logAll()
         return userProperties
     }
+    override fun findById(id:Long) : PropertyModel? {
+        val foundPlacemark: PropertyModel? = properties.find { it.id == id }
+        return foundPlacemark
+    }
 
 
     override fun create(property: PropertyModel) {
