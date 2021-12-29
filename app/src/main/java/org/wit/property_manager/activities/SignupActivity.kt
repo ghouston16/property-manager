@@ -6,8 +6,8 @@ import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import org.wit.property_manager.databinding.ActivitySignupBinding
 import org.wit.property_manager.main.MainApp
-import org.wit.property_manager.models.UserMemStore
 import org.wit.property_manager.models.UserModel
+import org.wit.property_manager.views.propertylist.PropertyListView
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -103,7 +103,7 @@ class SignupActivity : AppCompatActivity() {
                             launcherIntent.putExtra("user", person).putExtra("current_user", person)
                             startActivityForResult(launcherIntent, 0)
                         } else {
-                            val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                            val launcherIntent = Intent(this, PropertyListView::class.java)
                             launcherIntent.putExtra("user", person).putExtra("current_user", person)
                             i("$person")
                             startActivityForResult(launcherIntent, 0)

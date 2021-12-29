@@ -38,6 +38,15 @@
     <string name="add_property_image">Add Image</string>
     <string name="button_deleteAll">Delete All</string>
     <string name="menu_deleteAll">Delete All</string>
-    <string name="menu_view_placemarks">Properties</string>
+    <string name="menu_view_properties">Properties</string>
+    <string name="title_activity_property_maps">Map of All Placemarks </string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="menu_save">SAVE</string>
+    <string name="title_activity_placemark_maps">Map of All Properties</string>
 
 </resources>

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +17,7 @@ import org.wit.property_manager.adapters.UserListener
 import org.wit.property_manager.databinding.ActivityUserListBinding
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.UserModel
+import org.wit.property_manager.views.propertylist.PropertyListView
 import timber.log.Timber.i
 
 class UserListActivity : AppCompatActivity(), UserListener {
@@ -63,7 +65,7 @@ class UserListActivity : AppCompatActivity(), UserListener {
         }
         when (item.itemId) {
             R.id.item_properties -> {
-                val launcherIntent = Intent(this, PropertyListActivity::class.java)
+                val launcherIntent = Intent(this, PropertyListView::class.java)
                 launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
                 startActivityForResult(launcherIntent,0)
             }
@@ -71,6 +73,13 @@ class UserListActivity : AppCompatActivity(), UserListener {
         when (item.itemId) {
             R.id.item_deleteAll -> {
                 app.users.deleteAll()
+                Toast
+                    .makeText(
+                        app.applicationContext,
+                        "Deleting User Accounts",
+                        Toast.LENGTH_SHORT
+                    )
+                    .show()
                 val launcherIntent = Intent(this, UserListActivity::class.java)
                 launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
                 startActivityForResult(launcherIntent,0)

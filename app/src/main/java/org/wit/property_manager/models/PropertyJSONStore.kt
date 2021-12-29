@@ -48,6 +48,10 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
         logAll()
         return userProperties
     }
+    override fun findById(id:Long) : PropertyModel? {
+        val foundPlacemark: PropertyModel? = properties.find { it.id == id }
+        return foundPlacemark
+    }
 
 
     override fun create(property: PropertyModel) {
@@ -71,14 +75,15 @@ class PropertyJSONStore(private val context: Context) : PropertyStore {
             foundProperty.lat = property.lat
             foundProperty.lng = property.lng
             foundProperty.zoom = property.zoom
-            userProperties.clear()
             logAll()
         }
+        userProperties.clear()
         serialize()
     }
     override fun delete(property: PropertyModel) {
-            properties.remove(property)
-            userProperties.remove(property)
+        properties.remove(property)
+       // userProperties.remove(property)
+        userProperties.clear()
         serialize()
         // todo - find how to pass id of property to be deleted
     }

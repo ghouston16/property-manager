@@ -61,7 +61,11 @@ class PropertyMemStore: PropertyStore {
             logAll()
         }
     }
-    fun logAll(){
-        properties.forEach{ i("${it}")}
-    }
+    override fun findById(id: Long): PropertyModel?{
+        val foundProperty: PropertyModel? = properties.find { it.id == id }
+        return foundProperty
+}
+fun logAll(){
+    properties.forEach{ i("${it}")}
+}
 }
