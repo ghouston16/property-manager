@@ -22,9 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Property">
         <activity
-            android:name=".views.map.PropertyMapView"
-            android:label="@string/title_activity_placemark_maps"
-            android:theme="@style/Theme.PropertyManagerv1"/>
+            android:name=".activities.PropertyMapsActivity"
+            android:label="@string/title_activity_property_maps"
+            android:theme="@style/Theme.Property.NoActionBar" />
         <activity
             android:name=".activities.SignupActivity"
             android:label="@string/title_activity_signup"
@@ -41,16 +41,22 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".views.editlocation.EditLocationView"
+            android:name=".activities.MapActivity"
             android:exported="true"
             android:label="@string/title_activity_map" />
         <activity
-            android:name=".views.propertylist.PropertyListView"
-            android:exported="true"/>
-        <activity android:name=".views.property.PropertyView" />
+            android:name=".activities.PropertyListActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".activities.PropertyActivity" />
         <activity
             android:name=".activities.UserListActivity"
-            android:label="@string/title_activity_user_list"/>
+            android:label="@string/title_activity_user_list"></activity>
         <activity
             android:name=".activities.UserActivity"
             android:label="@string/title_activity_user"

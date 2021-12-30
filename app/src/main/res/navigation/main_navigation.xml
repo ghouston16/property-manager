@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/propertyFragment">
+    <fragment
+        android:id="@+id/propertyFragment"
+        android:name="org.wit.property_manager.PropertyFragment"
+        android:label="fragment_property"
+        tools:layout="@layout/fragment_property" />
+    <fragment
+        android:id="@+id/propertyListFragment"
+        android:name="org.wit.property_manager.PropertyListFragment"
+        android:label="fragment_property_list"
+        tools:layout="@layout/fragment_property_list" />
+</navigation>
