@@ -17,7 +17,6 @@ import org.wit.property_manager.adapters.UserListener
 import org.wit.property_manager.databinding.ActivityUserListBinding
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.UserModel
-import org.wit.property_manager.views.propertylist.PropertyListView
 import timber.log.Timber.i
 
 class UserListActivity : AppCompatActivity(), UserListener {
@@ -65,7 +64,7 @@ class UserListActivity : AppCompatActivity(), UserListener {
         }
         when (item.itemId) {
             R.id.item_properties -> {
-                val launcherIntent = Intent(this, PropertyListView::class.java)
+                val launcherIntent = Intent(this, PropertyListActivity::class.java)
                 launcherIntent.putExtra("current_user", currentUser).putExtra("user", currentUser)
                 startActivityForResult(launcherIntent,0)
             }

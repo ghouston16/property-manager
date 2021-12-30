@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.wit.property_manager.views.property.PropertyView">
+    tools:context="org.wit.property_manager.activities.PropertyActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
@@ -29,8 +29,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="600dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -39,9 +39,9 @@
             android:id="@+id/propertyTitle"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="64dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/hint_propertyTitle"
             android:inputType="text"
@@ -51,50 +51,53 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/description"
+            android:id="@+id/propertyDescription"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/hint_propertyDescription"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/propertyTitle" />
+
         <EditText
             android:id="@+id/propertyType"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/hint_propertyType"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description" />
+            app:layout_constraintTop_toBottomOf="@+id/propertyDescription" />
+
         <EditText
             android:id="@+id/propertyStatus"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:ems="10"
-            android:hint="@string/hint_propertyStatus"
+            android:hint="@string/hint_propertyType"
             android:inputType="textPersonName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/propertyType" />
+
         <Button
             android:id="@+id/btnAdd"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/button_addProperty"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,9 +116,9 @@
             android:id="@+id/propertyLocation"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="@string/button_location"
             app:layout_constraintEnd_toEndOf="@+id/btnAdd"
             app:layout_constraintHorizontal_bias="1.0"
@@ -137,6 +140,7 @@
             app:layout_constraintTop_toBottomOf="@+id/propertyLocation"
             app:layout_constraintVertical_bias="0.173"
             app:srcCompat="@drawable/ic_launcher_background" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

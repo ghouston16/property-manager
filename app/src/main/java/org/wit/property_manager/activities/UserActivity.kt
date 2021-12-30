@@ -19,8 +19,6 @@ import org.wit.property_manager.helpers.showImagePicker
 import org.wit.property_manager.main.MainApp
 import org.wit.property_manager.models.UserModel
 import org.wit.property_manager.models.Location
-import org.wit.property_manager.views.editlocation.EditLocationView
-import org.wit.property_manager.views.propertylist.PropertyListView
 import timber.log.Timber
 import timber.log.Timber.i
 
@@ -115,7 +113,7 @@ class UserActivity : AppCompatActivity() {
                             i("$currentUser")
                             startActivityForResult(launcherIntent, 0)
                         } else {
-                            val launcherIntent = Intent(this, PropertyListView::class.java)
+                            val launcherIntent = Intent(this, PropertyListActivity::class.java)
                             launcherIntent.putExtra("current_user", currentUser).putExtra("user",currentUser)
                             startActivityForResult(launcherIntent, 0)
                         }
@@ -141,7 +139,7 @@ class UserActivity : AppCompatActivity() {
                 location.lng = user.lng
                 location.zoom = user.zoom
             }
-            val launcherIntent = Intent(this, EditLocationView::class.java)
+            val launcherIntent = Intent(this, MapActivity::class.java)
                 .putExtra("location", location)
             mapIntentLauncher.launch(launcherIntent)
         }
